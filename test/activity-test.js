@@ -307,11 +307,17 @@ describe.only('Activity', function() {
 //need to split these tests up I think.
   it('should return a weeks worth active minutes for a given user', () => {
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'minutesActive')[0]).to.eql("2019/06/23: 8");
+  });
+
+  it('should be able to return a weeks worth active minutes for a different user', () => {
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'minutesActive')[3]).to.eql("2019/06/20: 7");
   });
 
   it('should return a weeks worth stairs for a given user', () => {
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'flightsOfStairs')[0]).to.eql("2019/06/23: 9");
+  });
+
+  it('should be able to return a weeks worth of stairs for a different user', () => {
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'flightsOfStairs')[3]).to.eql("2019/06/20: 4");
   });
 })

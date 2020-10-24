@@ -21,6 +21,7 @@ class Activity {
 
   calculateActiveAverageForWeek(id, date, userRepo) {
     const activityWeek = userRepo.getWeekFromDate(date, id, this.activityData);
+    
     const weekActivityTotal = activityWeek.reduce((acc, elem) => {
       acc += elem.minutesActive;
       return acc;
@@ -79,6 +80,7 @@ class Activity {
 
   userDataForToday(id, date, userRepo, relevantData) {
     const userData = userRepo.getDataFromUserID(id, this.activityData);
+
     return userData.find(data => data.date === date)[relevantData];
   }
 
