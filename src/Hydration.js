@@ -21,7 +21,7 @@ class Hydration {
   // this returns an array of strings (the day that a user hydrated and the number of ounces)
   calculateFirstWeekOunces(userRepo, id) {
     return userRepo.getFirstWeek(id, this.hydrationData).map((data) => {
-    `${data.date}: ${data.numOunces}`
+    return `${data.date}: ${data.numOunces}`
     });
   }
 
