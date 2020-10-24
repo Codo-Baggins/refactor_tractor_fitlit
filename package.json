@@ -7,7 +7,7 @@
     "start": "webpack-dev-server",
     "build": "webpack",
     "test": "mochapack 'test/**/*.js'",
-    "lint": "./node_modules/.bin/eslint 'src/**.js' 'test/**.js'"
+    "lint": "eslint 'src/**.js' 'test/**.js'"
   },
   "repository": {
     "type": "git",
@@ -33,5 +33,12 @@
   },
   "dependencies": {
     "jquery": "^3.4.1"
+  },
+  "bugs": {
+    "url": "https://github.com/turingschool-examples/webpack-starter-kit/issues"
+  },
+  "homepage": "https://github.com/turingschool-examples/webpack-starter-kit#readme",
+  "directories": {
+    "test": "test"
   }
 }

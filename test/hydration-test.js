@@ -3,7 +3,7 @@ import Hydration from '../src/Hydration';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe('Hydration', function() {
+describe.only('Hydration', function() {
   let hydrationData;
   let hydration;
 
@@ -113,6 +113,8 @@ describe('Hydration', function() {
     expect(hydration.calculateAverageOunces(3)).to.equal(2);
   });
 
+  // make this into two "it" blocks, 
+  //the second may say "should calculate the water intake for a different user"
   it('should find the water intake for a user on a specified date', function() {
     expect(hydration.calculateDailyOunces(1, "2019/06/15")).to.equal(37);
     expect(hydration.calculateDailyOunces(4, "2019/04/15")).to.equal(36);
@@ -145,6 +147,7 @@ describe('Hydration', function() {
     expect(hydration.calculateFirstWeekOunces(userRepo, 4)[6]).to.eql('2019/04/15: 36');
   });
 
+  // This test should test the functionality of calculateRandomWeekOunces()
   it('should find sleep quality by day for that days week', function() {
     const user3 = new User({
       id: 3,
@@ -174,5 +177,4 @@ describe('Hydration', function() {
   })
   //day of hydration should not include user 2 or user 1 on August 22
   //week of hydration should not include user 4 not during the week
-
 });
