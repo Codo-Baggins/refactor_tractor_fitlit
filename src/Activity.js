@@ -4,23 +4,35 @@ class Activity {
   }
 
   getMilesFromStepsByDate(id, date, userRepo) {
-    let userStepsByDate = this.activityData.find(data => id === data.userID && date === data.date);
+    const userStepsByDate = this.activityData.find(data => {
+      return id === data.userID && date === data.date
+    });
+
     return parseFloat(((userStepsByDate.numSteps * userRepo.strideLength) / 5280).toFixed(1));
   }
 
   getActiveMinutesByDate(id, date) {
-    let userActivityByDate = this.activityData.find(data => id === data.userID && date === data.date);
+    const userActivityByDate = this.activityData.find(data => {
+      return id === data.userID && date === data.date
+    });
+
     return userActivityByDate.minutesActive;
   }
 
   calculateActiveAverageForWeek(id, date, userRepo) {
-    return parseFloat((userRepo.getWeekFromDate(date, id, this.activityData).reduce((acc, elem) => {
-      return acc += elem.minutesActive;
-    }, 0) / 7).toFixed(1));
+    const activityWeek = userRepo.getWeekFromDate(date, id, this.activityData);
+    const weekActivityTotal = activityWeek.reduce((acc, elem) => {
+      acc += elem.minutesActive;
+      return acc;
+    }, 0)
+    return parseFloat((weekActivityTotal / 7).toFixed(1));
   }
 
   accomplishStepGoal(id, date, userRepo) {
-    let userStepsByDate = this.activityData.find(data => id === data.userID && date === data.date);
+    const userStepsByDate = this.activityData.find(data => {
+      return id === data.userID && date === data.date
+    });
+
     if (userStepsByDate.numSteps === userRepo.dailyStepGoal) {
       return true;
     }
