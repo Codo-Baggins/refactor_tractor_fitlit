@@ -3,7 +3,7 @@ import Activity from '../src/Activity';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe.only('Activity', function() {
+describe('Activity', function() {
   let activityData;
   let user1;
   let user2;
@@ -322,7 +322,7 @@ describe.only('Activity', function() {
   });
 })
 
-describe('Friend Activity', function() {
+describe.only('Friend Activity', function() {
   let activityData;
   let activity;
   let user1;
@@ -486,7 +486,7 @@ describe('Friend Activity', function() {
     userRepo = new UserRepo(users);
   });
 
-  it('should get a users friend lists activity', function() {
+  it('should get a users friend lists activity', () => {
     expect(activity.getFriendsActivity(user4, userRepo)).to.eql([{
         "userID": 1,
         "date": "2019/06/15",
@@ -553,7 +553,7 @@ describe('Friend Activity', function() {
     ]);
   });
 
-  it('should get a users ranked friendslist activity for a chosen week', function() {
+  it('should get a users ranked friendslist activity for a chosen week', () => {
     expect(activity.getFriendsAverageStepsForWeek(user4, "2019/06/15", userRepo)).to.eql([{
         '2': 9552
       },
@@ -563,18 +563,21 @@ describe('Friend Activity', function() {
     ]);
   });
 
-  it('should get a users ranked friendslist activity for a chosen week with names', function() {
+  it('should get a users ranked friendslist activity for a chosen week with names', () => {
     expect(activity.showChallengeListAndWinner(user4, "2019/06/15", userRepo)).to.eql([
       'Allie McCarthy: 9552', 'Alex Roth: 7475.5'
     ])
   });
-  it('should know the ID of the winning friend', function() {
+
+  it('should know the ID of the winning friend', () => {
     expect(activity.getWinnerId(user4, "2019/06/15", userRepo)).to.eql(2)
   })
-  it('should show a 3-day increasing streak for a users step count', function() {
+
+  it('should show a 3-day increasing streak for a users step count', () => {
     expect(activity.getStreak(userRepo, 1, 'numSteps')).to.eql(['2019/06/17', '2019/06/18'])
   });
-  it('should show a 3-day increasing streak for a users minutes of activity', function() {
+
+  it('should show a 3-day increasing streak for a users minutes of activity', () => {
     expect(activity.getStreak(userRepo, 1, 'minutesActive')).to.eql(['2019/06/18'])
   });
 });
