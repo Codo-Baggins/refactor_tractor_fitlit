@@ -4,13 +4,13 @@ import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
 
-describe('User Repo', function() {
+describe.only('User Repo', function() {
   let user1;
   let user2;
-  let user;
+  let users;
   let userRepo;
 
-  beforeEach(function() {
+  beforeEach(() => {
     user1 = new User({
       id: 1,
       name: "Alex Roth",
@@ -20,6 +20,7 @@ describe('User Repo', function() {
       dailyStepGoal: 10000,
       friends: [2, 3, 4]
     });
+
     user2 = new User({
       id: 2,
       name: "Allie McCarthy",
@@ -29,6 +30,7 @@ describe('User Repo', function() {
       dailyStepGoal: 9000,
       friends: [1, 3, 4]
     });
+
     users = [user1, user2];
     userRepo = new UserRepo(users);
   });
@@ -56,9 +58,6 @@ describe('User Repo', function() {
     });
     const users = [user1];
     const userRepo = new UserRepo(users);
-
-    console.log('here: ', userRepo.users[0]);
-
     expect(userRepo.users[0].id).to.equal(1);
   });
 

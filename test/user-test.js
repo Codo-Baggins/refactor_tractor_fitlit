@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe.only('User', function() {
+describe('User', () => {
   let user;
   let user2;
 
@@ -30,36 +30,26 @@ describe.only('User', function() {
 
   })
 
-  it('should be a function', function() {
+  it('should be a function', () => {
     expect(User).to.be.a('function');
   });
 
-  it('should be an instance of User', function() {
+  it('should be an instance of User', () => {
     expect(user).to.be.an.instanceof(User);
   });
 
-  it('should take a user data object', function() {
+  it('should take a user data object', () => {
 
     expect(user.id).to.equal(1);
     expect(user.name).to.equal("Alex Roth");
   });
 
-  it('should take a different user data object', function() {
+  it('should take a different user data object', () => {
     expect(user2.id).to.equal(2);
     expect(user2.name).to.equal("Allie McCarthy");
   });
 
-  it('should return user first name', function() {
-    const user2 = new User({
-      id: 2,
-      name: "Allie McCarthy",
-      address: "1235 Turing Street, Denver CO 80301-1697",
-      email: "allie.mcc1@hotmail.com",
-      strideLength: 3.3,
-      dailyStepGoal: 9000,
-      friends: [1, 3, 4]
-    });
-
+  it('should return user first name', () => {
     expect(user2.getFirstName()).to.equal("Allie");
   });
 
