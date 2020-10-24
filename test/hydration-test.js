@@ -152,8 +152,12 @@ describe.only('Hydration', function() {
   it('should find water intake by day for first week', () => {
 
     expect(hydration.calculateFirstWeekOunces(userRepo, 4)[0]).to.equal('2019/09/20: 40');
-    expect(hydration.calculateFirstWeekOunces(userRepo, 4)[6]).to.equal('2019/04/15: 36');
   });
+
+  it('should be able to find water intake for a different day of the first week', () => {
+
+    expect(hydration.calculateFirstWeekOunces(userRepo, 4)[6]).to.equal('2019/04/15: 36');
+  })
 
   // This test should test the functionality of calculateRandomWeekOunces()
   it('should find sleep quality by day for that days week', function() {
