@@ -220,11 +220,11 @@ describe.only('Activity', function() {
     expect(activity.calculateActiveAverageForWeek(1, "2019/06/21", userRepo)).to.eql(40.4);
   });
 
-  it('should return true/false if the given user met their step goal on a given day', function() {
+  it('should return true/false if the given user met their step goal on a given day', () => {
     expect(activity.accomplishStepGoal(4, "2019/06/15", userRepo.users[3])).to.eql(false);
   });
 
-  it('should return all days that a given user exceeded their step goal', function() {
+  it('should return all days that a given user exceeded their step goal', () => {
     expect(activity.getDaysGoalExceeded(1, userRepo.users[0])).to.eql([
       "2019/06/17",
       "2019/06/19",
@@ -235,7 +235,7 @@ describe.only('Activity', function() {
     ]);
   });
 
-  it('should return the highest number of stairs climbed in a day for all time', function() {
+  it('should return the highest number of stairs climbed in a day for all time', () => {
     expect(activity.getStairRecord(11)).to.eql(33);
   });
 
@@ -267,7 +267,7 @@ describe.only('Activity', function() {
     expect(activity.getAllUserAverageForDay("2019/06/23", userRepo, "numSteps")).to.eql(8000)
   });
 
-  it('should return average minutes active given date for all users', function() {
+  it('should return average minutes active given date for all users', () => {
     activityData = activityData.push({
       "userID": 1,
       "date": "2019/06/23",
@@ -290,25 +290,27 @@ describe.only('Activity', function() {
     expect(activity.getAllUserAverageForDay("2019/06/23", userRepo, "minutesActive")).to.eql(12.5)
   });
 
-  it('should return steps for given user on given date', function() {
+  it('should return steps for given user on given date', () => {
     expect(activity.userDataForToday(2, "2019/06/15", userRepo, 'numSteps')).to.eql(4294);
   });
 
-  it('should return minutes active for given user on given date', function() {
+  it('should return minutes active for given user on given date', () => {
     expect(activity.userDataForToday(1, "2019/06/18", userRepo, 'minutesActive')).to.eql(62);
   });
 
-  it('should return a weeks worth steps for a given user', function() {
+  it('should return a weeks worth steps for a given user', () => {
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'numSteps')[0]).to.eql("2019/06/23: 9000");
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'numSteps')[3]).to.eql("2019/06/20: 9303");
   });
 
-  it('should return a weeks worth active minutes for a given user', function() {
+//what is the difference between the two assertions here?
+//need to split these tests up I think.
+  it('should return a weeks worth active minutes for a given user', () => {
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'minutesActive')[0]).to.eql("2019/06/23: 8");
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'minutesActive')[3]).to.eql("2019/06/20: 7");
   });
 
-  it('should return a weeks worth stairs for a given user', function() {
+  it('should return a weeks worth stairs for a given user', () => {
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'flightsOfStairs')[0]).to.eql("2019/06/23: 9");
     expect(activity.userDataForWeek(1, "2019/06/23", userRepo, 'flightsOfStairs')[3]).to.eql("2019/06/20: 4");
   });

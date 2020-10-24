@@ -25,6 +25,7 @@ class Activity {
       acc += elem.minutesActive;
       return acc;
     }, 0)
+
     return parseFloat((weekActivityTotal / 7).toFixed(1));
   }
 
@@ -40,25 +41,53 @@ class Activity {
   }
 
   getDaysGoalExceeded(id, userRepo) {
-    return this.activityData.filter(data => id === data.userID && data.numSteps > userRepo.dailyStepGoal).map(data => data.date);
+    const activitiesExceeded = this.activityData.filter(data => {
+      return id === data.userID && data.numSteps > userRepo.dailyStepGoal
+    })
+
+    return activitiesExceeded.map(data => {
+      return data.date;
+    })
   }
 
   getStairRecord(id) {
     return this.activityData.filter(data => id === data.userID).reduce((acc, elem) => (elem.flightsOfStairs > acc) ? elem.flightsOfStairs : acc, 0);
+
+    //NEED HELP REFACTORING THIS
+    // const matchedUserData = this.activityData.filter(data => {
+    //   return id === data.UserID;
+    // })
+    //
+    // return matchedUserData.reduce((acc, elem) => {
+    //   if (elem.flightsOfStairs > acc) {
+    //     return elem.flightsOfStairs;
+    //   }
+    //   return acc;
+    // }, 0)
   }
 
   getAllUserAverageForDay(date, userRepo, relevantData) {
-    let selectedDayData = userRepo.chooseDayDataForAllUsers(this.activityData, date);
-    return parseFloat((selectedDayData.reduce((acc, elem) => acc += elem[relevantData], 0) / selectedDayData.length).toFixed(1));
+    const selectedDayData = userRepo.chooseDayDataForAllUsers(this.activityData, date);
+
+    const totalDayData = selectedDayData.reduce((acc, elem) => {
+      acc += elem[relevantData];
+      return acc;
+    }, 0)
+
+    return parseFloat((totalDayData / selectedDayData.length).toFixed(1))
   }
 
   userDataForToday(id, date, userRepo, relevantData) {
-    let userData = userRepo.getDataFromUserID(id, this.activityData);
+    const userData = userRepo.getDataFromUserID(id, this.activityData);
     return userData.find(data => data.date === date)[relevantData];
   }
 
   userDataForWeek(id, date, userRepo, releventData) {
-    return userRepo.getWeekFromDate(date, id, this.activityData).map((data) => `${data.date}: ${data[releventData]}`);
+    const usersWeek = userRepo.getWeekFromDate(date, id, this.activityData)
+
+    return usersWeek.map(data => {
+      return `${data.date}: ${data[releventData]}`
+    })
   }
 
   // Friends
