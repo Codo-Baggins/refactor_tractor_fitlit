@@ -15,7 +15,7 @@ class Hydration {
     const findOuncesByDate = this.hydrationData.find((data) => {
       return id === data.userID && date == data.date
     });
-    
+
     return findOuncesByDate.numOunces;
   }
 
@@ -27,7 +27,12 @@ class Hydration {
   }
 
   calculateRandomWeekOunces(date, id, userRepo) {
-    return userRepo.getWeekFromDate(date, id, this.hydrationData).map((data) => `${data.date}: ${data.numOunces}`);
+    const weekForDate = userRepo.getWeekFromDate(date, id, this.hydrationData);
+
+    return weekForDate.map(data => {
+      return `${data.date}: ${data.numOunces}`
+    })
+    // return userRepo.getWeekFromDate(date, id, this.hydrationData).map((data) => `${data.date}: ${data.numOunces}`);
   }
 }
 

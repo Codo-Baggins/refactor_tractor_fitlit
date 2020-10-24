@@ -3,7 +3,7 @@ import Hydration from '../src/Hydration';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe('Hydration', function() {
+describe.only('Hydration', function() {
   let hydrationData;
   let hydration;
   let user1;
