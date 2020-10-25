@@ -34,22 +34,20 @@ class UserRepo {
     return this.makeSortedUserArray(id, dataSet).slice(0, 7);
   }
 
-//refactor this?
   getWeekFromDate(date, id, dataSet) {
     const dateIndex = this.makeSortedUserArray(id, dataSet).indexOf(this.makeSortedUserArray(id, dataSet).find((sortedItem) => (sortedItem.date === date)));
 
     return this.makeSortedUserArray(id, dataSet).slice(dateIndex, dateIndex + 7);
   }
 
-//refactor?
   chooseWeekDataForAllUsers(dataSet, date) {
-    return dataSet.filter(function(dataItem) {
+    return dataSet.filter(dataItem => {
       return (new Date(date)).setDate((new Date(date)).getDate() - 7) <= new Date(dataItem.date) && new Date(dataItem.date) <= new Date(date)
     })
   }
 
   chooseDayDataForAllUsers(dataSet, date) {
-    return dataSet.filter(function(dataItem) {
+    return dataSet.filter(dataItem => {
       return dataItem.date === date
     });
   }
@@ -80,7 +78,6 @@ class UserRepo {
     });
   }
 
-//refactor
   combineRankedUserIDsAndAveragedData(dataSet, date, relevantData, listFromMethod) {
     const sortedObjectKeys = this.isolateUsernameAndRelevantData(dataSet, date, relevantData, listFromMethod)
 

@@ -7,7 +7,6 @@ class Activity {
     const userStepsByDate = this.activityData.find(data => {
       return id === data.userID && date === data.date
     });
-
     return parseFloat(((userStepsByDate.numSteps * userRepo.strideLength) / 5280).toFixed(1));
   }
 
@@ -15,18 +14,15 @@ class Activity {
     const userActivityByDate = this.activityData.find(data => {
       return id === data.userID && date === data.date
     });
-
     return userActivityByDate.minutesActive;
   }
 
   calculateActiveAverageForWeek(id, date, userRepo) {
     const activityWeek = userRepo.getWeekFromDate(date, id, this.activityData);
-
     const weekActivityTotal = activityWeek.reduce((acc, elem) => {
       acc += elem.minutesActive;
       return acc;
     }, 0)
-
     return parseFloat((weekActivityTotal / 7).toFixed(1));
   }
 
@@ -34,7 +30,6 @@ class Activity {
     const userStepsByDate = this.activityData.find(data => {
       return id === data.userID && date === data.date
     });
-
     if (userStepsByDate.numSteps === userRepo.dailyStepGoal) {
       return true;
     }
@@ -45,7 +40,6 @@ class Activity {
     const activitiesExceeded = this.activityData.filter(data => {
       return id === data.userID && data.numSteps > userRepo.dailyStepGoal
     })
-
     return activitiesExceeded.map(data => {
       return data.date;
     })
@@ -74,19 +68,16 @@ class Activity {
       acc += elem[relevantData];
       return acc;
     }, 0)
-
     return parseFloat((totalDayData / selectedDayData.length).toFixed(1))
   }
 
   userDataForToday(id, date, userRepo, relevantData) {
     const userData = userRepo.getDataFromUserID(id, this.activityData);
-
     return userData.find(data => data.date === date)[relevantData];
   }
 
   userDataForWeek(id, date, userRepo, releventData) {
     const usersWeek = userRepo.getWeekFromDate(date, id, this.activityData)
-
     return usersWeek.map(data => {
       return `${data.date}: ${data[releventData]}`
     })
@@ -99,7 +90,6 @@ class Activity {
     const userDatalist = user.friends.map(function(friend) {
       return userRepo.getDataFromUserID(friend, data)
     });
-
     return userDatalist.reduce(function(arraySoFar, listItem) {
       return arraySoFar.concat(listItem);
     }, []);
@@ -113,7 +103,6 @@ class Activity {
 
   showChallengeListAndWinner(user, date, userRepo) {
     const rankedList = this.getFriendsAverageStepsForWeek(user, date, userRepo);
-
     return rankedList.map(listItem => {
       const userID = Object.keys(listItem)[0];
       const userName = userRepo.getDataFromID(parseInt(userID)).name;
@@ -132,7 +121,6 @@ class Activity {
   getStreak(userRepo, id, relevantData) {
     const data = this.activityData;
     const sortedUserArray = (userRepo.makeSortedUserArray(id, data)).reverse();
-
     const streaks = sortedUserArray.filter((element, index) => {
       if (index >= 2) {
         return (sortedUserArray[index - 2][relevantData] < sortedUserArray[index - 1][relevantData] && sortedUserArray[index - 1][relevantData] < sortedUserArray[index][relevantData])
