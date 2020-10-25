@@ -4,7 +4,7 @@ import Sleep from '../src/Sleep';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe('Sleep', function() {
+describe.only('Sleep', function() {
   let sleepData;
   let sleep;
   let user1;
@@ -289,22 +289,22 @@ describe('Sleep', function() {
   });
 
   it('should take in a list of data', () => {
-    expect(sleep.sleepData[1].userID).to.equal(2);
-    expect(sleep.sleepData[3].hoursSlept).to.equal(5.4);
-    expect(sleep.sleepData[6].sleepQuality).to.equal(3);
-    expect(sleep.sleepData[7].date).to.equal('2018/07/23');
+    expect(sleep.dataSet[1].userID).to.equal(2);
+    expect(sleep.dataSet[3].hoursSlept).to.equal(5.4);
+    expect(sleep.dataSet[6].sleepQuality).to.equal(3);
+    expect(sleep.dataSet[7].date).to.equal('2018/07/23');
   });
 
   it('should find the average sleep hours per day for a user', () => {
-    expect(sleep.calculateAverageSleep(3)).to.equal(3);
+    expect(sleep.calculateAverage(3, 'hoursSlept')).to.equal(3);
   });
 
   it('should find the average sleep quality per day for a user', () => {
-    expect(sleep.calculateAverageSleepQuality(3)).to.equal(2);
+    expect(sleep.calculateAverage(3, 'sleepQuality')).to.equal(2);
   });
 
   it('should find the sleep hours for a user on a specified date', () => {
-    expect(sleep.calculateDailySleep(2, "2017/06/15")).to.equal(7);
+    expect(sleep.calculateDaily(2, "2017/06/15", 'hoursSlept')).to.equal(7);
   });
 
   it('should be able to find the sleep hours for a user on a different date', () => {

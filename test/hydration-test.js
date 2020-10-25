@@ -132,13 +132,15 @@ describe('Hydration', function() {
   });
 
   it('should take in a list of data', () => {
-    expect(hydration.hydrationData[0].userID).to.equal(1);
-    expect(hydration.hydrationData[2].numOunces).to.equal(1);
-    expect(hydration.hydrationData[4].date).to.equal('2018/10/23');
+    expect(hydration.dataSet[0].userID).to.equal(1);
+    expect(hydration.dataSet[2].numOunces).to.equal(1);
+    expect(hydration.dataSet[4].date).to.equal('2018/10/23');
   });
 
   it('should find the average water intake per day for a user', () => {
-    expect(hydration.calculateAverageOunces(3)).to.equal(2);
+    // expect(hydration.calculateAverageOunces(3)).to.equal(2);
+    expect(hydration.calculateAverage(3, 'numOunces')).to.equal(2);
+    console.log(Object.values(hydration));
   });
 
   it('should find the water intake for a user on a specified date', () => {
@@ -155,18 +157,21 @@ describe('Hydration', function() {
   });
 
   it('should be able to find water intake for a different day of the first week', () => {
-
     expect(hydration.calculateFirstWeekOunces(userRepo, 4)[6]).to.equal('2019/04/15: 36');
   })
 
-  // This test should test the functionality of calculateRandomWeekOunces()
-  it('should find sleep quality by day for that days week', function() {
-    const users = [user1, user2];
-    const userRepo = new UserRepo(users);
-    expect(hydration.calculateRandomWeekOunces('2019/09/18', 4, userRepo)[0]).to.eql('2019/09/18: 40');
-    // expect(hydration.calculateRandomWeekOunces('2018/02/01', 4, userRepo)[6]).to.eql('2019/09/16: 30');
-    //this is failing because it doesn't exist, need a failure case
+  it('should be able to calculate random week ounces', () => {
+    expect(hydration.calculateSpecifiedWeekData('2019/09/18', 4, userRepo, 'numOunces')[0]).to.eql('2019/09/18: 40');
   })
-  //day of hydration should not include user 2 or user 1 on August 22
-  //week of hydration should not include user 4 not during the week
+
+  // // This test should test the functionality of calculateRandomWeekOunces()
+  // it('should find sleep quality by day for that days week', function() {
+  //   const users = [user1, user2];
+  //   const userRepo = new UserRepo(users);
+  //   expect(hydration.calculateSpecificWeekData('2019/09/18', 4, userRepo, 'numOunces')[0]).to.eql('2019/09/18: 40');
+  //   // expect(hydration.calculateRandomWeekOunces('2018/02/01', 4, userRepo)[6]).to.eql('2019/09/16: 30');
+  //   //this is failing because it doesn't exist, need a failure case
+  // })
+  // //day of hydration should not include user 2 or user 1 on August 22
+  // //week of hydration should not include user 4 not during the week
 });

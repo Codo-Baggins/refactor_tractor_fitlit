@@ -6,7 +6,7 @@ import Hydration from '../src/Hydration';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe.only('HealthMonitor', function() {
+describe('HealthMonitor', function() {
   let hydrationData;
   let sleepData;
   let activityData;

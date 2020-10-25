@@ -1,18 +1,21 @@
-class Hydration {
+import HealthMonitor from './Health-monitor'
+
+class Hydration extends HealthMonitor {
   constructor(hydrationData) {
-    this.hydrationData = hydrationData;
+    super(hydrationData)
+    // this.hydrationData = hydrationData;
   }
 
-  calculateAverageOunces(id) {
-    const perDayUserHydration = this.hydrationData.filter((data) => id === data.userID);
+  // calculateAverageOunces(id) {
+  //   const perDayUserHydration = this.hydrationData.filter((data) => id === data.userID);
 
-    return perDayUserHydration.reduce((sumSoFar, data) => {
-      return sumSoFar += data.numOunces;
-    }, 0) / perDayUserHydration.length;
-  }
+  //   return perDayUserHydration.reduce((sumSoFar, data) => {
+  //     return sumSoFar += data.numOunces;
+  //   }, 0) / perDayUserHydration.length;
+  // }
 
   calculateDailyOunces(id, date) {
-    const findOuncesByDate = this.hydrationData.find((data) => {
+    const findOuncesByDate = this.dataSet.find((data) => {
       return id === data.userID && date == data.date
     });
 
@@ -21,18 +24,18 @@ class Hydration {
 
   // this returns an array of strings (the day that a user hydrated and the number of ounces)
   calculateFirstWeekOunces(userRepo, id) {
-    return userRepo.getFirstWeek(id, this.hydrationData).map(data => {
+    return userRepo.getFirstWeek(id, this.dataSet).map(data => {
       return `${data.date}: ${data.numOunces}`
     });
   }
 
-  calculateRandomWeekOunces(date, id, userRepo) {
-    const weekForDate = userRepo.getWeekFromDate(date, id, this.hydrationData);
+  // calculateRandomWeekOunces(date, id, userRepo) {
+  //   const weekForDate = userRepo.getWeekFromDate(date, id, this.dataSet);
 
-    return weekForDate.map(data => {
-      return `${data.date}: ${data.numOunces}`
-    })
-  }
+  //   return weekForDate.map(data => {
+  //     return `${data.date}: ${data.numOunces}`
+  //   })
+  // }
 }
 
 
