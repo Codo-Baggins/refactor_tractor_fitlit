@@ -20,8 +20,9 @@ class UserRepo {
   }
 
   makeSortedUserArray(id, dataSet) {
-    let selectedID = this.getDataFromUserID(id, dataSet)
-    let sortedByDate = selectedID.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const selectedID = this.getDataFromUserID(id, dataSet)
+    const sortedByDate = selectedID.sort((a, b) => new Date(b.date) - new Date(a.date));
+    console.log(sortedByDate)
     return sortedByDate;
   }
 
@@ -66,8 +67,9 @@ class UserRepo {
 
   rankUserIDsbyRelevantDataValue(dataSet, date, relevantData, listFromMethod) {
     const sortedObjectKeys = this.isolateUsernameAndRelevantData(dataSet, date, relevantData, listFromMethod)
+    const objectKeyList = Object.keys(sortedObjectKeys)
 
-    return Object.keys(sortedObjectKeys).sort((b, a) => {
+    return objectKeyList.sort((b, a) => {
       return (sortedObjectKeys[a].reduce((sumSoFar, sleepQualityValue) => {
         sumSoFar += sleepQualityValue
         return sumSoFar;
@@ -78,9 +80,10 @@ class UserRepo {
     });
   }
 
+//refactor
   combineRankedUserIDsAndAveragedData(dataSet, date, relevantData, listFromMethod) {
     const sortedObjectKeys = this.isolateUsernameAndRelevantData(dataSet, date, relevantData, listFromMethod)
-    
+
     const rankedUsersAndAverages = this.rankUserIDsbyRelevantDataValue(dataSet, date, relevantData, listFromMethod)
 
     return rankedUsersAndAverages.map((rankedUser) => {

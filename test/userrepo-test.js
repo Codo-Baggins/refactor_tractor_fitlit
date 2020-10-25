@@ -42,7 +42,6 @@ describe.only('User Repo', function() {
   });
 
   it('takes an array of user data', function() {
-
     expect(userRepo.users).to.include(user2);
   });
 
@@ -454,6 +453,11 @@ describe.only('User Repo', function() {
       ]);
     });
 
+    it('should return a user\s data in a list sorted by most recent date', () => {
+      expect(userRepo.makeSortedUserArray(2, hydrationData)[0].date).to.equal("2019/06/15");
+      expect(userRepo.makeSortedUserArray(2, hydrationData)[2].date).to.equal("2016/04/27")
+    })
+
     it('should get a users most recent date using the app', () => {
       expect(userRepo.getToday(4, hydrationData)).to.eql("2019/09/20");
     });
@@ -492,7 +496,7 @@ describe.only('User Repo', function() {
       })
     });
 
-    it('should be anle to isolate a user ID and it\'s values from another relevant piece of data', () => {
+    it('should be able to isolate a user ID and it\'s values from another relevant piece of data', () => {
       expect(userRepo.isolateUsernameAndRelevantData(hydrationData, "2019/05/09", 'numOunces', userRepo.chooseWeekDataForAllUsers(hydrationData, "2019/05/09"))).to.eql({
         '3': [1]
       })
