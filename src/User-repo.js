@@ -22,7 +22,6 @@ class UserRepo {
   makeSortedUserArray(id, dataSet) {
     const selectedID = this.getDataFromUserID(id, dataSet)
     const sortedByDate = selectedID.sort((a, b) => new Date(b.date) - new Date(a.date));
-    console.log(sortedByDate)
     return sortedByDate;
   }
 

@@ -6,7 +6,7 @@ import Hydration from '../src/Hydration';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe('HealthMonitor', function() {
+describe.only('HealthMonitor', function() {
   let hydrationData;
   let sleepData;
   let activityData;
@@ -18,6 +18,7 @@ describe('HealthMonitor', function() {
   let users;
   let userRepo;
   let healthMonitor;
+  let healthMonitorTwo;
 
   beforeEach(function() {
     hydrationData = [{
@@ -475,7 +476,8 @@ describe('HealthMonitor', function() {
     hydration = new Hydration(hydrationData);
     activity = new Activity(activityData);
     sleep = new Sleep(sleepData);
-    healthMonitor = new HealthMonitor();
+    healthMonitor = new HealthMonitor(hydrationData);
+    healthMonitorTwo = new HealthMonitor(sleepData);
 
     user1 = new User({
         id: 1,
@@ -507,6 +509,26 @@ describe('HealthMonitor', function() {
   })
 
   it('should be an instance of HealthMonitor', () => {
-      expect(healthMonitor).to.be.an.instanceOf(HealthMonitor);
+    expect(healthMonitor).to.be.an.instanceOf(HealthMonitor);
+  })
+
+  it('should be able to take in an argument of data', () => {
+    expect(healthMonitor.dataSet).to.deep.equal(hydrationData);
+  })
+
+  it('should be able to take in a different argument of data', () => {
+    expect(healthMonitorTwo.dataSet).to.deep.equal(sleepData);
+  })
+
+  it('should be able to calculate average data per day', () => {
+    expect(healthMonitor.calculateAverage(3, 'numOunces')).to.equal(2);
+  })
+
+  it('should be able to calculate average data per day for another data set', () => {
+    expect(healthMonitorTwo.calculateAverage(3, 'sleepQuality')).to.equal(2);
+  })
+
+  it('should find sleep by day for that days week', () => {
+    expect(healthMonitorTwo.calculateSpecifiedWeekData('2019/06/18', 4, userRepo, 'hoursSlept')[0]).to.eql('2019/06/18: 7.9');
   })
 })
