@@ -7,10 +7,10 @@ import User from '../src/User';
 describe('User Repo', function() {
   let user1;
   let user2;
-  let user;
+  let users;
   let userRepo;
 
-  beforeEach(function() {
+  beforeEach(() => {
     user1 = new User({
       id: 1,
       name: "Alex Roth",
@@ -20,6 +20,7 @@ describe('User Repo', function() {
       dailyStepGoal: 10000,
       friends: [2, 3, 4]
     });
+
     user2 = new User({
       id: 2,
       name: "Allie McCarthy",
@@ -29,6 +30,7 @@ describe('User Repo', function() {
       dailyStepGoal: 9000,
       friends: [1, 3, 4]
     });
+
     users = [user1, user2];
     userRepo = new UserRepo(users);
   });
@@ -40,41 +42,18 @@ describe('User Repo', function() {
   });
 
   it('takes an array of user data', function() {
-
     expect(userRepo.users).to.include(user2);
   });
 
-  it('should have a parameter to take in user data', function() {
-    const user1 = new User({
-      id: 1,
-      name: "Alex Roth",
-      address: "1234 Turing Street, Denver CO 80301-1697",
-      email: "alex.roth1@hotmail.com",
-      strideLength: 4.3,
-      dailyStepGoal: 10000,
-      friends: [2, 3, 4]
-    });
-    const users = [user1];
-    const userRepo = new UserRepo(users);
-
-    console.log('here: ', userRepo.users[0]);
-
+  it('should have a parameter to take in user data', () => {
     expect(userRepo.users[0].id).to.equal(1);
   });
 
-  it('should return user data when given user ID', function() {
-
-
-    userRepo.getDataFromID(1);
-
+  it('should return user data when given user ID', () => {
     expect(userRepo.getDataFromID(1)).to.eql(user1);
   });
 
-  it('should return the average of all users step goals', function() {
-
-
-    userRepo.calculateAverageStepGoal();
-
+  it('should return the average of all users step goals', () => {
     expect(userRepo.calculateAverageStepGoal()).to.eql(9500);
   });
 
@@ -454,6 +433,7 @@ describe('User Repo', function() {
         }
       ];
     });
+
     it('should get a users data from its userID in any data set', function() {
       expect(userRepo.getDataFromUserID(1, hydrationData)).to.eql([{
           "userID": 1,
@@ -472,47 +452,64 @@ describe('User Repo', function() {
         }
       ]);
     });
-    it('should get a users most recent date using the app', function() {
+
+    it('should return a user\s data in a list sorted by most recent date', () => {
+      expect(userRepo.makeSortedUserArray(2, hydrationData)[0].date).to.equal("2019/06/15");
+      expect(userRepo.makeSortedUserArray(2, hydrationData)[2].date).to.equal("2016/04/27")
+    })
+
+    it('should get a users most recent date using the app', () => {
       expect(userRepo.getToday(4, hydrationData)).to.eql("2019/09/20");
     });
-    it('should sort data by date and extract its week', function() {
 
+    it('should sort data by date and extract its week', () => {
       expect(userRepo.getFirstWeek(4, hydrationData)[3].date).to.eql("2019/09/17");
     });
-    it('should get a sorted week of data for a single user from a date', function() {
+
+    it('should get a sorted week of data for a single user from a date', () => {
       expect(userRepo.getWeekFromDate('2019/09/17', 4, hydrationData)[3].date).to.eql("2019/04/15");
-      expect(userRepo.getWeekFromDate('2019/09/18', 4, hydrationData)[3].date).to.eql("2019/09/15");
     });
-    it('should get a week of data for all users in data set', function() {
+
+    it('should be able to get a sorted week of data for a user from a different date', () => {
+      expect(userRepo.getWeekFromDate('2019/09/18', 4, hydrationData)[3].date).to.eql("2019/09/15");
+    })
+
+    it('should get a week of data for all users in data set', () => {
       expect(userRepo.chooseWeekDataForAllUsers(hydrationData, '2019/09/17')[2].date).to.eql("2019/09/15");
       expect(userRepo.chooseWeekDataForAllUsers(hydrationData, '2019/09/17')[2].userID).to.eql(4);
       expect(userRepo.chooseWeekDataForAllUsers(hydrationData, '2019/09/17')[3].date).to.eql("2019/09/17");
       expect(userRepo.chooseWeekDataForAllUsers(hydrationData, '2019/09/17')[3].userID).to.eql(3);
     });
-    it('should get a day of data for all users in data set', function() {
+
+    it('should get a day of data for all users in data set', () => {
       expect(userRepo.chooseDayDataForAllUsers(sleepData, '2019/06/15')[0].date).to.eql('2019/06/15');
       expect(userRepo.chooseDayDataForAllUsers(sleepData, '2019/06/15')[0].hoursSlept).to.eql(9);
       expect(userRepo.chooseDayDataForAllUsers(sleepData, '2019/06/15')[2].date).to.eql('2019/06/15');
       expect(userRepo.chooseDayDataForAllUsers(sleepData, '2019/06/15')[2].userID).to.eql(5);
     });
-    it('should isolate a user ID and its values of any relevant data', function() {
+
+    it('should isolate a user ID and its values from relevant data', () => {
       expect(userRepo.isolateUsernameAndRelevantData(sleepData, "2019/06/21", 'sleepQuality', userRepo.chooseWeekDataForAllUsers(sleepData, "2019/06/21"))).to.eql({
         '2': [3.5, 4, 3.3, 3.6, 3.6, 4, 3.1],
         '4': [3.5, 4, 1.3, 1.6, 1.6, 1, 3.1],
         '5': [4, 4, 4, 4, 4, 4, 4]
       })
+    });
+
+    it('should be able to isolate a user ID and it\'s values from another relevant piece of data', () => {
       expect(userRepo.isolateUsernameAndRelevantData(hydrationData, "2019/05/09", 'numOunces', userRepo.chooseWeekDataForAllUsers(hydrationData, "2019/05/09"))).to.eql({
         '3': [1]
       })
-    });
-    it('should rank user ids according to relevant data value averages', function() {
+    })
+
+    it('should rank user ids according to relevant data value averages', () => {
       expect(userRepo.rankUserIDsbyRelevantDataValue(sleepData, "2019/06/21", 'sleepQuality', userRepo.chooseWeekDataForAllUsers(sleepData, "2019/06/21"))).to.eql(['5', '2', '4'])
     });
+
     it('should show list in order of userID and average of relevant value', function() {
       expect(userRepo.combineRankedUserIDsAndAveragedData(sleepData, "2019/06/21", 'sleepQuality', userRepo.chooseWeekDataForAllUsers(sleepData, "2019/06/21"))[0]).to.eql({
         '5': 4
       })
     });
-
   });
 });
