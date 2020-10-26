@@ -6,10 +6,8 @@ class Activity extends HealthMonitor {
   }
 
   getMilesFromStepsByDate(id, date, userRepo) {
-    const userStepsByDate = this.dataSet.find(data => {
-      return id === data.userID && date === data.date
-    });
-    return parseFloat(((userStepsByDate.numSteps * userRepo.strideLength) / 5280).toFixed(1));
+    const userStepsByDate = this.calculateDaily(id, date, "numSteps");
+    return parseFloat(((userStepsByDate * userRepo.strideLength) / 5280).toFixed(1));
   }
 
   calculateActiveAverageForWeek(id, date, userRepo) {
@@ -22,10 +20,8 @@ class Activity extends HealthMonitor {
   }
 
   accomplishStepGoal(id, date, userRepo) {
-    const userStepsByDate = this.dataSet.find(data => {
-      return id === data.userID && date === data.date
-    });
-    if (userStepsByDate.numSteps === userRepo.dailyStepGoal) {
+    const userStepsByDate = this.calculateDaily(id, date, "numSteps");
+    if (userStepsByDate === userRepo.dailyStepGoal) {
       return true;
     }
     return false

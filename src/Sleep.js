@@ -40,7 +40,7 @@ class Sleep extends HealthMonitor {
   }
 
   getWinnerNamesFromList(sortedArray, userRepo) {
-    const bestSleepers = sortedArray.filter(function(element) {
+    const bestSleepers = sortedArray.filter(element => {
       return element[Object.keys(element)] === Object.values(sortedArray[0])[0]
     });
     const bestSleeperIds = bestSleepers.map(bestSleeper => {
