@@ -1,4 +1,3 @@
-import sleepData from './data/sleep';
 import HealthMonitor from './Health-monitor';
 
 class Sleep extends HealthMonitor {
