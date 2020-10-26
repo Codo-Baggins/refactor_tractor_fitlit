@@ -1,8 +1,8 @@
 import HealthMonitor from './Health-monitor';
 
 class Sleep extends HealthMonitor {
-  constructor(sleepData) {
-    super(sleepData);
+  constructor(hydrationData) {
+    super(hydrationData);
   }
 
   calculateAllUserSleepQuality() {
@@ -10,7 +10,7 @@ class Sleep extends HealthMonitor {
       sumSoFar += dataItem.sleepQuality;
       return sumSoFar;
     }, 0)
-    return totalSleepQuality / dataSet.length
+    return totalSleepQuality / this.dataSet.length
   }
 
   determineBestSleepers(date, userRepo) {
