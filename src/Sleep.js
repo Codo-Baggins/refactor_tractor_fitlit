@@ -5,42 +5,30 @@ class Sleep extends HealthMonitor {
   constructor(sleepData) {
     super(sleepData);
   }
-  // replacing with calculateAverage()
-  // calculateAverageSleep(id) {
-  //   const perDaySleep = this.sleepData.filter(data => {
-  //     return id === data.userID});
 
-  //   return perDaySleep.reduce((sumSoFar, data) => {
-  //     sumSoFar += data.hoursSlept;
-  //     return sumSoFar;
-  //   }, 0) / perDaySleep.length;
+  calculateAverageSleep(id) {
+    const perDaySleep = this.sleepData.filter(data => {
+      return id === data.userID});
+
+    return perDaySleep.reduce((sumSoFar, data) => {
+      sumSoFar += data.hoursSlept;
+      return sumSoFar;
+    }, 0) / perDaySleep.length;
+  }
+
+  // calculateDailySleep(id, date) {
+  //   const findSleepByDate = this.dataSet.find(data => {
+  //     return id === data.userID && date === data.date}
+  //   );
+  //   return findSleepByDate.hoursSlept;
   // }
-  // replacing with calculateAverage()
-  // calculateAverageSleepQuality(id) {
-  //   const perDaySleepQuality = this.sleepData.filter(data => {
-  //     return id === data.userID;
+
+  // calculateDailySleepQuality(id, date) {
+  //   const findSleepQualityByDate = this.dataSet.find(data => {
+  //     return id === data.userID && date === data.date
   //   });
-
-  //   return perDaySleepQuality.reduce((sumSoFar, data) => {
-  //     sumSoFar += data.sleepQuality;
-  //     return sumSoFar;
-  //   }, 0) / perDaySleepQuality.length;
+  //   return findSleepQualityByDate.sleepQuality;
   // }
-
-  calculateDailySleep(id, date) {
-    const findSleepByDate = this.dataSet.find(data => {
-      return id === data.userID && date === data.date}
-    );
-    return findSleepByDate.hoursSlept;
-  }
-
-  calculateDailySleepQuality(id, date) {
-    const findSleepQualityByDate = this.dataSet.find(data => {
-      return id === data.userID && date === data.date
-    });
-
-    return findSleepQualityByDate.sleepQuality;
-  }
 
   calculateWeekSleep(date, id, userRepo) {
     const weekFromDay = userRepo.getWeekFromDate(date, id, this.dataSet)

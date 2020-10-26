@@ -4,7 +4,7 @@ import Sleep from '../src/Sleep';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe.only('Sleep', function() {
+describe('Sleep', function() {
   let sleepData;
   let sleep;
   let user1;
@@ -307,18 +307,6 @@ describe.only('Sleep', function() {
     expect(sleep.calculateDaily(2, "2017/06/15", 'hoursSlept')).to.equal(7);
   });
 
-  it('should be able to find the sleep hours for a user on a different date', () => {
-    expect(sleep.calculateDailySleep(4, "2019/06/21")).to.equal(6.1);
-  })
-
-  it('should find the sleep quality for a user on a specified date', function() {
-    expect(sleep.calculateDailySleepQuality(2, "2017/06/15")).to.equal(4.7);
-  });
-
-  it('should be able to find the sleep quality for a user on a different date', () => {
-    expect(sleep.calculateDailySleepQuality(4, "2019/06/21")).to.equal(3.5);
-  })
-
   it('should find sleep by day for that days week', () => {
     expect(sleep.calculateWeekSleep('2019/06/18', 4, userRepo)[0]).to.eql('2019/06/18: 7.9');
   })
@@ -326,6 +314,10 @@ describe.only('Sleep', function() {
   it('should be able to find sleep by a different day for that days week', () => {
     expect(sleep.calculateWeekSleep('2019/06/18', 4, userRepo)[6]).to.eql('2017/06/15: 5.4');
   })
+
+  it.skip('should find the average sleep quality per day for a user', () => {
+    expect(sleep.calculateAverageSleepQuality(3)).to.equal(2);
+  });
 
   it('should find sleep quality by day for that days week', () => {
     expect(sleep.calculateWeekSleepQuality('2019/06/18', 4, userRepo)[0]).to.eql('2019/06/18: 1.6');

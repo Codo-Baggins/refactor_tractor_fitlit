@@ -19,6 +19,7 @@ describe('HealthMonitor', function() {
   let userRepo;
   let healthMonitor;
   let healthMonitorTwo;
+  let healthMonitorThree;
 
   beforeEach(function() {
     hydrationData = [{
@@ -478,6 +479,7 @@ describe('HealthMonitor', function() {
     sleep = new Sleep(sleepData);
     healthMonitor = new HealthMonitor(hydrationData);
     healthMonitorTwo = new HealthMonitor(sleepData);
+    healthMonitorThree = new HealthMonitor(activityData);
 
     user1 = new User({
         id: 1,
@@ -488,7 +490,7 @@ describe('HealthMonitor', function() {
         dailyStepGoal: 5000,
         friends: [2, 3, 4]
       });
-  
+
       user2 = new User({
         id: 2,
         name: "Allie McCarthy",
@@ -522,13 +524,26 @@ describe('HealthMonitor', function() {
 
   it('should be able to calculate average data per day', () => {
     expect(healthMonitor.calculateAverage(3, 'numOunces')).to.equal(2);
-  })
+  });
 
   it('should be able to calculate average data per day for another data set', () => {
     expect(healthMonitorTwo.calculateAverage(3, 'sleepQuality')).to.equal(2);
-  })
+  });
 
-  it('should find sleep by day for that days week', () => {
+// calculateDailyData
+it('should find data intake for a user on a specified date', () => {
+  it('should find the sleep quality for a user on a specified date', function() {
+    expect(healthMonitorTwo.calculateDaily(2, "2017/06/15", "sleepQuality")).to.equal(4.7);
+  });
+});
+
+//need a second test
+
+  it('should find data by day for that days week', () => {
     expect(healthMonitorTwo.calculateSpecifiedWeekData('2019/06/18', 4, userRepo, 'hoursSlept')[0]).to.eql('2019/06/18: 7.9');
-  })
+  });
+
+  it('should find other data by day for that days week', () => {
+    expect(healthMonitorThree.calculateSpecifiedWeekData( "2019/06/23", 1, userRepo, 'numSteps')[0]).to.eql("2019/06/23: 9000");
+  });
 })
