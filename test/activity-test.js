@@ -3,7 +3,7 @@ import Activity from '../src/Activity';
 import UserRepo from '../src/User-repo';
 import User from '../src/User';
 
-describe.only('Activity', function() {
+describe('Activity', function() {
   let activityData;
   let user1;
   let user2;
@@ -201,11 +201,11 @@ describe.only('Activity', function() {
   });
 
   it('should take in data', () => {
-    expect(activity.activityData[0].userID).to.eql(1);
-    expect(activity.activityData[4].date).to.eql("2019/06/15");
-    expect(activity.activityData[3].numSteps).to.eql(3486);
-    expect(activity.activityData[8].minutesActive).to.eql(41);
-    expect(activity.activityData[10].flightsOfStairs).to.eql(24);
+    expect(activity.dataSet[0].userID).to.eql(1);
+    expect(activity.dataSet[4].date).to.eql("2019/06/15");
+    expect(activity.dataSet[3].numSteps).to.eql(3486);
+    expect(activity.dataSet[8].minutesActive).to.eql(41);
+    expect(activity.dataSet[10].flightsOfStairs).to.eql(24);
   });
 
   it('should return the miles a given user has walked on a given date', () => {
@@ -213,7 +213,7 @@ describe.only('Activity', function() {
   });
 
   it('should return the number of minutes a given user was active for on a given day', function() {
-    expect(activity.getActiveMinutesByDate(1, "2019/06/16")).to.eql(12);
+    expect(activity.calculateDaily(1, "2019/06/16", 'minutesActive')).to.eql(12);
   });
 
   it('should return average active minutes in a given week', function() {

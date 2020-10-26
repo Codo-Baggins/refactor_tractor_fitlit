@@ -1,24 +1,17 @@
-class Activity {
+import HealthMonitor from './Health-monitor'
+
+class Activity extends HealthMonitor {
   constructor(activityData) {
-    this.activityData = activityData
+    super(activityData)
   }
 
   getMilesFromStepsByDate(id, date, userRepo) {
-    const userStepsByDate = this.activityData.find(data => {
-      return id === data.userID && date === data.date
-    });
-    return parseFloat(((userStepsByDate.numSteps * userRepo.strideLength) / 5280).toFixed(1));
-  }
-
-  getActiveMinutesByDate(id, date) {
-    const userActivityByDate = this.activityData.find(data => {
-      return id === data.userID && date === data.date
-    });
-    return userActivityByDate.minutesActive;
+    const userStepsByDate = this.calculateDaily(id, date, "numSteps");
+    return parseFloat(((userStepsByDate * userRepo.strideLength) / 5280).toFixed(1));
   }
 
   calculateActiveAverageForWeek(id, date, userRepo) {
-    const activityWeek = userRepo.getWeekFromDate(date, id, this.activityData);
+    const activityWeek = userRepo.getWeekFromDate(date, id, this.dataSet);
     const weekActivityTotal = activityWeek.reduce((acc, elem) => {
       acc += elem.minutesActive;
       return acc;
@@ -27,17 +20,15 @@ class Activity {
   }
 
   accomplishStepGoal(id, date, userRepo) {
-    const userStepsByDate = this.activityData.find(data => {
-      return id === data.userID && date === data.date
-    });
-    if (userStepsByDate.numSteps === userRepo.dailyStepGoal) {
+    const userStepsByDate = this.calculateDaily(id, date, "numSteps");
+    if (userStepsByDate === userRepo.dailyStepGoal) {
       return true;
     }
     return false
   }
 
   getDaysGoalExceeded(id, userRepo) {
-    const activitiesExceeded = this.activityData.filter(data => {
+    const activitiesExceeded = this.dataSet.filter(data => {
       return id === data.userID && data.numSteps > userRepo.dailyStepGoal
     })
     return activitiesExceeded.map(data => {
@@ -46,24 +37,11 @@ class Activity {
   }
 
   getStairRecord(id) {
-    return this.activityData.filter(data => id === data.userID).reduce((acc, elem) => (elem.flightsOfStairs > acc) ? elem.flightsOfStairs : acc, 0);
-
-    //NEED HELP REFACTORING THIS
-    // const matchedUserData = this.activityData.filter(data => {
-    //   return id === data.UserID;
-    // })
-    //
-    // return matchedUserData.reduce((acc, elem) => {
-    //   if (elem.flightsOfStairs > acc) {
-    //     return elem.flightsOfStairs;
-    //   }
-    //   return acc;
-    // }, 0)
+    return this.dataSet.filter(data => id === data.userID).reduce((acc, elem) => (elem.flightsOfStairs > acc) ? elem.flightsOfStairs : acc, 0);
   }
 
   getAllUserAverageForDay(date, userRepo, relevantData) {
-    const selectedDayData = userRepo.chooseDayDataForAllUsers(this.activityData, date);
-
+    const selectedDayData = userRepo.chooseDayDataForAllUsers(this.dataSet, date);
     const totalDayData = selectedDayData.reduce((acc, elem) => {
       acc += elem[relevantData];
       return acc;
@@ -72,12 +50,12 @@ class Activity {
   }
 
   userDataForToday(id, date, userRepo, relevantData) {
-    const userData = userRepo.getDataFromUserID(id, this.activityData);
+    const userData = userRepo.getDataFromUserID(id, this.dataSet);
     return userData.find(data => data.date === date)[relevantData];
   }
 
   userDataForWeek(id, date, userRepo, releventData) {
-    const usersWeek = userRepo.getWeekFromDate(date, id, this.activityData)
+    const usersWeek = userRepo.getWeekFromDate(date, id, this.dataSet)
     return usersWeek.map(data => {
       return `${data.date}: ${data[releventData]}`
     })
@@ -86,7 +64,7 @@ class Activity {
   // Friends
 
   getFriendsActivity(user, userRepo) {
-    const data = this.activityData;
+    const data = this.dataSet;
     const userDatalist = user.friends.map(function(friend) {
       return userRepo.getDataFromUserID(friend, data)
     });
@@ -117,9 +95,8 @@ class Activity {
     return winner;
   }
 
-//method is very confusing look at how we can clean up the filter maybe
   getStreak(userRepo, id, relevantData) {
-    const data = this.activityData;
+    const data = this.dataSet;
     const sortedUserArray = (userRepo.makeSortedUserArray(id, data)).reverse();
     const streaks = sortedUserArray.filter((element, index) => {
       if (index >= 2) {
