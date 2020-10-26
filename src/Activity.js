@@ -42,23 +42,10 @@ class Activity extends HealthMonitor {
 
   getStairRecord(id) {
     return this.dataSet.filter(data => id === data.userID).reduce((acc, elem) => (elem.flightsOfStairs > acc) ? elem.flightsOfStairs : acc, 0);
-
-    //NEED HELP REFACTORING THIS
-    // const matchedUserData = this.dataSet.filter(data => {
-    //   return id === data.UserID;
-    // })
-    //
-    // return matchedUserData.reduce((acc, elem) => {
-    //   if (elem.flightsOfStairs > acc) {
-    //     return elem.flightsOfStairs;
-    //   }
-    //   return acc;
-    // }, 0)
   }
 
   getAllUserAverageForDay(date, userRepo, relevantData) {
     const selectedDayData = userRepo.chooseDayDataForAllUsers(this.dataSet, date);
-
     const totalDayData = selectedDayData.reduce((acc, elem) => {
       acc += elem[relevantData];
       return acc;
@@ -112,7 +99,6 @@ class Activity extends HealthMonitor {
     return winner;
   }
 
-//method is very confusing look at how we can clean up the filter maybe
   getStreak(userRepo, id, relevantData) {
     const data = this.dataSet;
     const sortedUserArray = (userRepo.makeSortedUserArray(id, data)).reverse();

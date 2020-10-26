@@ -17,12 +17,11 @@ class Sleep extends HealthMonitor {
   determineBestSleepers(date, userRepo) {
     const timeline = userRepo.chooseWeekDataForAllUsers(this.dataSet, date);
     const userSleepObject = userRepo.isolateUsernameAndRelevantData(this.dataSet, date, 'sleepQuality', timeline);
-
     return Object.keys(userSleepObject).filter(function(key) {
       return (userSleepObject[key].reduce(function(sumSoFar, sleepQualityValue) {
         sumSoFar += sleepQualityValue
         return sumSoFar;
-      }, 0) / userSleepObject[key].length) > 3
+        }, 0) / userSleepObject[key].length) > 3
     }).map(function(sleeper) {
       return userRepo.getDataFromID(parseInt(sleeper)).name;
     })
@@ -31,15 +30,12 @@ class Sleep extends HealthMonitor {
   determineSleepWinnerForWeek(date, userRepo) {
     const timeline = userRepo.chooseWeekDataForAllUsers(this.dataSet, date);
     const sleepRankWithData = userRepo.combineRankedUserIDsAndAveragedData(this.sleepData, date, 'sleepQuality', timeline);
-
     return this.getWinnerNamesFromList(sleepRankWithData, userRepo);
   }
 
   determineSleepHoursWinnerForDay(date, userRepo) {
     const timeline = userRepo.chooseDayDataForAllUsers(this.dataSet, date);
-
     const sleepRankWithData = userRepo.combineRankedUserIDsAndAveragedData(this.sleepData, date, 'hoursSlept', timeline);
-
     return this.getWinnerNamesFromList(sleepRankWithData, userRepo);
   }
 
@@ -55,6 +51,5 @@ class Sleep extends HealthMonitor {
     });
   }
 }
-
 
 export default Sleep;
