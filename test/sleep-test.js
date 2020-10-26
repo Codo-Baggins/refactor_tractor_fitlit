@@ -307,25 +307,9 @@ describe('Sleep', function() {
     expect(sleep.calculateDaily(2, "2017/06/15", 'hoursSlept')).to.equal(7);
   });
 
-  it('should find sleep by day for that days week', () => {
-    expect(sleep.calculateWeekSleep('2019/06/18', 4, userRepo)[0]).to.eql('2019/06/18: 7.9');
-  })
-
-  it('should be able to find sleep by a different day for that days week', () => {
-    expect(sleep.calculateWeekSleep('2019/06/18', 4, userRepo)[6]).to.eql('2017/06/15: 5.4');
-  })
-
-  it.skip('should find the average sleep quality per day for a user', () => {
-    expect(sleep.calculateAverageSleepQuality(3)).to.equal(2);
-  });
-
-  it('should find sleep quality by day for that days week', () => {
-    expect(sleep.calculateWeekSleepQuality('2019/06/18', 4, userRepo)[0]).to.eql('2019/06/18: 1.6');
-  })
-
-  it('should be able to find sleep quality by a different day for that days week', () => {
-    expect(sleep.calculateWeekSleepQuality('2019/06/18', 4, userRepo)[6]).to.eql('2017/06/15: 3');
-  })
+  // it.skip('should find the average sleep quality per day for a user', () => {
+  //   expect(sleep.calculateAverageSleepQuality(3)).to.equal(2);
+  // });
 
   it('should determine the best quality sleepers for a week', () => {
     expect(sleep.determineBestSleepers("2019/06/21", userRepo)).to.eql(["Allie McCarthy", "Bugs Bunny"]);
@@ -382,5 +366,4 @@ describe('Sleep', function() {
 
     expect(sleep.determineSleepHoursWinnerForDay('2019/06/21', userRepo)).to.eql(["Bugs Bunny", "Richmond"]);
   })
-  //make this test fail when user is NOT best in week
 });

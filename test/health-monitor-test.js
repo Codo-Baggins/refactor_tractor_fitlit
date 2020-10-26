@@ -530,14 +530,13 @@ describe('HealthMonitor', function() {
     expect(healthMonitorTwo.calculateAverage(3, 'sleepQuality')).to.equal(2);
   });
 
-// calculateDailyData
-it('should find data intake for a user on a specified date', () => {
-  it('should find the sleep quality for a user on a specified date', function() {
+  it('should find data intake for a user on a specified date', () => {
     expect(healthMonitorTwo.calculateDaily(2, "2017/06/15", "sleepQuality")).to.equal(4.7);
   });
-});
 
-//need a second test
+  it('should find a different data intake for a user on a specified date', () => {
+    expect(healthMonitor.calculateDaily(1, "2019/06/15", "numOunces")).to.equal(37);
+  });
 
   it('should find data by day for that days week', () => {
     expect(healthMonitorTwo.calculateSpecifiedWeekData('2019/06/18', 4, userRepo, 'hoursSlept')[0]).to.eql('2019/06/18: 7.9');

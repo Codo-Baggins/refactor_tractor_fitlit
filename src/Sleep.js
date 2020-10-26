@@ -6,45 +6,6 @@ class Sleep extends HealthMonitor {
     super(sleepData);
   }
 
-  calculateAverageSleep(id) {
-    const perDaySleep = this.sleepData.filter(data => {
-      return id === data.userID});
-
-    return perDaySleep.reduce((sumSoFar, data) => {
-      sumSoFar += data.hoursSlept;
-      return sumSoFar;
-    }, 0) / perDaySleep.length;
-  }
-
-  // calculateDailySleep(id, date) {
-  //   const findSleepByDate = this.dataSet.find(data => {
-  //     return id === data.userID && date === data.date}
-  //   );
-  //   return findSleepByDate.hoursSlept;
-  // }
-
-  // calculateDailySleepQuality(id, date) {
-  //   const findSleepQualityByDate = this.dataSet.find(data => {
-  //     return id === data.userID && date === data.date
-  //   });
-  //   return findSleepQualityByDate.sleepQuality;
-  // }
-
-  calculateWeekSleep(date, id, userRepo) {
-    const weekFromDay = userRepo.getWeekFromDate(date, id, this.dataSet)
-
-    return weekFromDay.map(data => {
-      return `${data.date}: ${data.hoursSlept}`
-    })
-  }
-
-  calculateWeekSleepQuality(date, id, userRepo) {
-    const weekFromDay = userRepo.getWeekFromDate(date, id, this.dataSet)
-    return weekFromDay.map(data => {
-      return `${data.date}: ${data.sleepQuality}`
-    })
-  }
-
   calculateAllUserSleepQuality() {
     const totalSleepQuality = this.dataSet.reduce((sumSoFar, dataItem) => {
       sumSoFar += dataItem.sleepQuality;
@@ -54,7 +15,6 @@ class Sleep extends HealthMonitor {
   }
 
   determineBestSleepers(date, userRepo) {
-    //THIS NEEDS A MAJOR REFACTOR -- SORT MAYBE?
     const timeline = userRepo.chooseWeekDataForAllUsers(this.dataSet, date);
     const userSleepObject = userRepo.isolateUsernameAndRelevantData(this.dataSet, date, 'sleepQuality', timeline);
 
@@ -87,11 +47,9 @@ class Sleep extends HealthMonitor {
     const bestSleepers = sortedArray.filter(function(element) {
       return element[Object.keys(element)] === Object.values(sortedArray[0])[0]
     });
-
     const bestSleeperIds = bestSleepers.map(bestSleeper => {
       return (Object.keys(bestSleeper));
     });
-
     return bestSleeperIds.map(sleepNumber => {
       return userRepo.getDataFromID(parseInt(sleepNumber)).name;
     });

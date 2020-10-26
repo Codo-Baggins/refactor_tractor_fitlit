@@ -12,13 +12,6 @@ class Activity extends HealthMonitor {
     return parseFloat(((userStepsByDate.numSteps * userRepo.strideLength) / 5280).toFixed(1));
   }
 
-  // getActiveMinutesByDate(id, date) {
-  //   const userActivityByDate = this.dataSet.find(data => {
-  //     return id === data.userID && date === data.date
-  //   });
-  //   return userActivityByDate.minutesActive;
-  // }
-
   calculateActiveAverageForWeek(id, date, userRepo) {
     const activityWeek = userRepo.getWeekFromDate(date, id, this.dataSet);
     const weekActivityTotal = activityWeek.reduce((acc, elem) => {
