@@ -128,6 +128,7 @@ function makeRandomDate(userStorage, id, dataSet) {
   return sortedArray[Math.floor(Math.random() * sortedArray.length + 1)].date
 
 }
+
 function getHyrdationElements(id, hydrationInfo, dateString, userStorage, laterDateString) {
   diplayDayHydration(id, hydrationInfo, dateString);
   displayHydrationAvg(id, hydrationInfo)
@@ -154,8 +155,10 @@ function displayHydrationAvg(id, hydrationInfo) {
 function displayHyrdrationWeek(id, hydrationInfo, userStorage, laterDateString) {
   const hydrationThisWeek = document.getElementById('hydrationThisWeek');
   const hydrationEarlierWeek = document.getElementById('hydrationEarlierWeek');
-  hydrationThisWeek.insertAdjacentHTML('afterBegin', makeHydrationHTML(id, hydrationInfo, userStorage, hydrationInfo.calculateFirstWeekOunces(userStorage, id)));
-  hydrationEarlierWeek.insertAdjacentHTML('afterBegin', makeHydrationHTML(id, hydrationInfo, userStorage, hydrationInfo.calculateSpecifiedWeekData(laterDateString, id, userStorage, 'numOunces')));
+  const thisWeekHydrationHTML = makeHydrationHTML(id, hydrationInfo, userStorage, hydrationInfo.calculateFirstWeekOunces(userStorage, id));
+  const earlierWeekHydrationHTML = makeHydrationHTML(id, hydrationInfo, userStorage, hydrationInfo.calculateSpecifiedWeekData(laterDateString, id, userStorage, 'numOunces'));
+  hydrationThisWeek.insertAdjacentHTML('afterBegin', thisWeekHydrationHTML);
+  hydrationEarlierWeek.insertAdjacentHTML('afterBegin', earlierWeekHydrationHTML);
 }
 
 function makeHydrationHTML(id, hydrationInfo, userStorage, method) {
@@ -189,8 +192,10 @@ function displayAvgSleepQuality(sleepInfo) {
 function displaySleepWeek(id, sleepInfo, userStorage, dateString, laterDateString) {
   const sleepEarlierWeek = document.getElementById('sleepEarlierWeek');
   const sleepThisWeek = document.getElementById('sleepThisWeek');
-  sleepThisWeek.insertAdjacentHTML('afterBegin', makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(dateString, id, userStorage, 'hoursSlept')));
-  sleepEarlierWeek.insertAdjacentHTML('afterBegin', makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(laterDateString, id, userStorage, 'hoursSlept')));
+  const thisWeekSleepHTML = makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(dateString, id, userStorage, 'hoursSlept'));
+  const earlierWeekSleepHTML = makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(laterDateString, id, userStorage, 'hoursSlept'));
+  sleepThisWeek.insertAdjacentHTML('afterBegin', thisWeekSleepHTML);
+  sleepEarlierWeek.insertAdjacentHTML('afterBegin', earlierWeekSleepHTML);
 }
 
 function makeSleepHTML(id, sleepInfo, userStorage, method) {
