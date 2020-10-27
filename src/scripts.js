@@ -66,23 +66,45 @@ function getUserById(id, listRepo) {
 
 
 function addInfoToSidebar(user, userStorage) {
-  const sidebarName = document.getElementById('sidebarName'); // moved from global
-  const stepGoalCard = document.getElementById('stepGoalCard');
-  const headerText = document.getElementById('headerText');
+  displaySideBarName(user)
+  displayStepGoalCard(user)
+  displayHeaderText(user)
+  displayUserDetails(user)
+  displayUserStride(user)
+  displayUserFriends(user, userStorage);
+};
+
+function displayUserFriends(user, userStorage) {
+  const friendList = document.getElementById('friendList');
+  friendList.insertAdjacentHTML('afterBegin', makeFriendHTML(user, userStorage))
+}
+
+function displayUserStride(user) {
+  const userStridelength = document.getElementById('userStridelength');
+  userStridelength.innerText = `Your stridelength is ${user.strideLength} meters.`;
+}
+
+function displayUserDetails(user) {
   const userAddress = document.getElementById('userAddress');
   const userEmail = document.getElementById('userEmail');
-  const userStridelength = document.getElementById('userStridelength');
-  const friendList = document.getElementById('friendList');
-
-  sidebarName.innerText = user.name;
-  headerText.innerText = `${user.getFirstName()}'s Activity Tracker`;
-  stepGoalCard.innerText = `Your daily step goal is ${user.dailyStepGoal}.`
-  //avStepGoalCard.innerText = `The average daily step goal is ${userStorage.calculateAverageStepGoal()}`;
   userAddress.innerText = user.address;
   userEmail.innerText = user.email;
-  userStridelength.innerText = `Your stridelength is ${user.strideLength} meters.`;
-  friendList.insertAdjacentHTML('afterBegin', makeFriendHTML(user, userStorage))
-};
+}
+
+function displayHeaderText(user) {
+  const headerText = document.getElementById('headerText');
+  headerText.innerText = `${user.getFirstName()}'s Activity Tracker`;
+}
+
+function displayStepGoalCard(user) {
+  const stepGoalCard = document.getElementById('stepGoalCard');
+  stepGoalCard.innerText = `Your daily step goal is ${user.dailyStepGoal}.`
+}
+
+function displaySideBarName(user) {
+  const sidebarName = document.getElementById('sidebarName');
+  sidebarName.innerText = user.name;
+}
 
 function makeFriendHTML(user, userStorage) {
   return user.getFriendsNames(userStorage).map(friendName => `<li class='historical-list-listItem'>${friendName}</li>`).join('');
