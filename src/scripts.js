@@ -176,30 +176,103 @@ function makeSleepQualityHTML(id, sleepInfo, userStorage, method) {
 }
 
 function getActivityElements(id, activityInfo, dateString, userStorage, laterDateString, user, winnerId) {
-  const userStairsToday = document.getElementById('userStairsToday');
-  const avgStairsToday = document.getElementById('avgStairsToday');
-  const userStepsToday = document.getElementById('userStepsToday');
-  const avgStepsToday = document.getElementById('avgStepsToday');
-  const userMinutesToday = document.getElementById('userMinutesToday');
-  const avgMinutesToday = document.getElementById('avgMinutesToday');
-  const userStepsThisWeek = document.getElementById('userStepsThisWeek');
-  const userStairsThisWeek = document.getElementById('userStairsThisWeek');
-  const userMinutesThisWeek = document.getElementById('userMinutesThisWeek');
-  const bestUserSteps = document.getElementById('bestUserSteps');
-  addActivityInfo(id, activityInfo, dateString, userStorage, laterDateString, user, winnerId);
+  displayBestUserSteps(user, activityInfo, userStorage, winnerId, dateString)
+  displayUserMinsWeek(id, activityInfo, userStorage, dateString);
+  displayUserStairsWeek(id, activityInfo, userStorage, dateString)
+  displayUserStepsWeek(id, activityInfo, userStorage, activityInfo, dateString)
+  displayAvgMinsToday(activityInfo, dateString, userStorage)
+  displayUserMinsToday(activityInfo, id, dateString, userStorage);
+  displayAvgStepsToday(activityInfo, dateString, userStorage)
+  displayUserStepsToday(activityInfo, id, dateString, userStorage)
+  displayAvgStairsToday(activityInfo, dateString, userStorage)
+  displayUserStairsToday(activityInfo, id, dateString, userStorage);
 }
 
-function addActivityInfo(id, activityInfo, dateString, userStorage, laterDateString, user, winnerId) {
-  userStairsToday.insertAdjacentHTML("afterBegin", `<p>Stair Count:</p><p>You</><p><span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'flightsOfStairs')}</span></p>`)
-  avgStairsToday.insertAdjacentHTML("afterBegin", `<p>Stair Count: </p><p>All Users</p><p><span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'flightsOfStairs')}</span></p>`)
-  userStepsToday.insertAdjacentHTML("afterBegin", `<p>Step Count:</p><p>You</p><p><span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'numSteps')}</span></p>`)
-  avgStepsToday.insertAdjacentHTML("afterBegin", `<p>Step Count:</p><p>All Users</p><p><span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'numSteps')}</span></p>`)
-  userMinutesToday.insertAdjacentHTML("afterBegin", `<p>Active Minutes:</p><p>You</p><p><span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'minutesActive')}</span></p>`)
-  avgMinutesToday.insertAdjacentHTML("afterBegin", `<p>Active Minutes:</p><p>All Users</p><p><span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'minutesActive')}</span></p>`)
-  userStepsThisWeek.insertAdjacentHTML("afterBegin", makeStepsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "numSteps")));
-  userStairsThisWeek.insertAdjacentHTML("afterBegin", makeStairsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "flightsOfStairs")));
-  userMinutesThisWeek.insertAdjacentHTML("afterBegin", makeMinutesHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "minutesActive")));
-  bestUserSteps.insertAdjacentHTML("afterBegin", makeStepsHTML(user, activityInfo, userStorage, activityInfo.userDataForWeek(winnerId, dateString, userStorage, "numSteps")));
+function displayBestUserSteps(user, activityInfo, userStorage, winnerId, dateString) {
+  const bestUserSteps = document.getElementById('bestUserSteps');
+  const stepsBlock = makeStepsHTML(user, activityInfo, userStorage, activityInfo.userDataForWeek(winnerId, dateString, userStorage, "numSteps"))
+  bestUserSteps.insertAdjacentHTML("afterBegin", );
+}
+
+function displayUserMinsWeek(id, activityInfo, userStorage, dateString) {
+  const userMinutesThisWeek = document.getElementById('userMinutesThisWeek');
+  const minsBlock = makeMinutesHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "minutesActive"))
+  userMinutesThisWeek.insertAdjacentHTML("afterBegin", minsBlock);
+}
+
+function displayUserStairsWeek(id, activityInfo, userStorage, dateString) {
+  const userStairsThisWeek = document.getElementById('userStairsThisWeek');
+  const stairsBlock = makeStairsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "flightsOfStairs"))
+  userStairsThisWeek.insertAdjacentHTML("afterBegin", stairsBlock);
+}
+
+function displayUserStepsWeek(id, activityInfo, userStorage, dateString) {
+  const userStepsThisWeek = document.getElementById('userStepsThisWeek');
+  const stepsBlock = makeStepsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "numSteps"))
+  userStepsThisWeek.insertAdjacentHTML("afterBegin", stepsBlock);
+}
+
+function displayAvgMinsToday(activityInfo, dateString, userStorage) {
+  const avgMinutesToday = document.getElementById('avgMinutesToday');
+  const minsBlock =
+  `<p>Active Minutes:</p>
+  <p>All Users</p>
+  <p>
+  <span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'minutesActive')}</span>
+  </p>`
+  avgMinutesToday.insertAdjacentHTML("afterBegin", minsBlock)
+}
+
+function displayUserMinsToday(activityInfo, id, dateString, userStorage) {
+  const userMinutesToday = document.getElementById('userMinutesToday');
+  const minsBlock =
+  `<p>Active Minutes:</p>
+  <p>You</p>
+  <p>
+  <span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'minutesActive')}</span>
+  </p>`
+  userMinutesToday.insertAdjacentHTML("afterBegin", minsBlock);
+}
+
+function displayAvgStepsToday(activityInfo, dateString, userStorage) {
+  const avgStepsToday = document.getElementById('avgStepsToday');
+  const stepsBlock =
+  `<p>Step Count:</p>
+  <p>All Users</p>
+  <p>
+  <span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'numSteps')}</span>
+  </p>`
+  avgStepsToday.insertAdjacentHTML("afterBegin", stepsBlock)
+}
+
+function displayUserStepsToday(activityInfo, id, dateString, userStorage) {
+  const userStepsToday = document.getElementById('userStepsToday');
+  const stepsBlock =
+  `<p>Step Count:</p><p>You</p>
+  <p>
+  <span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'numSteps')}</span>
+  </p>`
+  userStepsToday.insertAdjacentHTML("afterBegin", stepsBlock);
+}
+
+function displayAvgStairsToday(activityInfo, dateString, userStorage) {
+  const avgStairsToday = document.getElementById('avgStairsToday');
+  const stairsBlock = `<p>Stair Count: </p>
+  <p>All Users</p>
+  <p>
+  <span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'flightsOfStairs')}</span>
+  </p>`
+  avgStairsToday.insertAdjacentHTML("afterBegin", stairsBlock)
+}
+
+function displayUserStairsToday(activityInfo, id, dateString, userStorage) {
+  const userStairsToday = document.getElementById('userStairsToday');
+  const stairsBlock =
+  `<p>Stair Count:</p>
+  <p>You</><p>
+  <span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'flightsOfStairs')}</span>
+  </p>`
+  userStairsToday.insertAdjacentHTML("afterBegin", stairsBlock)
 }
 
 function makeStepsHTML(id, activityInfo, userStorage, method) {
