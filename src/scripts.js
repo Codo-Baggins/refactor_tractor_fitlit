@@ -137,18 +137,32 @@ function makeHydrationHTML(id, hydrationInfo, userStorage, method) {
 }
 
 function getSleepElements(id, sleepInfo, dateString, userStorage, laterDateString) {
-  const sleepToday = document.getElementById('sleepToday');
   const sleepQualityToday = document.getElementById('sleepQualityToday');
   const avUserSleepQuality = document.getElementById('avUserSleepQuality');
   const sleepThisWeek = document.getElementById('sleepThisWeek');
   const sleepEarlierWeek = document.getElementById('sleepEarlierWeek');
-  addSleepInfo(id, sleepInfo, dateString, userStorage, laterDateString);
+  displaySleepQualityToday(id, sleepInfo, dateString, sleepQualityToday);
+  displayAvgSleepQuality(sleepInfo, avUserSleepQuality)
+  displaySleepWeek(id, sleepInfo, userStorage, sleepThisWeek, dateString, laterDateString)
 }
 
-function addSleepInfo(id, sleepInfo, dateString, userStorage, laterDateString) {
-  sleepToday.insertAdjacentHTML("afterBegin", `<p>You slept</p> <p><span class="number">${sleepInfo.calculateDaily(id, dateString, 'hoursSlept')}</span></p> <p>hours today.</p>`);
-  sleepQualityToday.insertAdjacentHTML("afterBegin", `<p>Your sleep quality was</p> <p><span class="number">${sleepInfo.calculateDaily(id, dateString, 'sleepQuality')}</span></p><p>out of 5.</p>`);
-  avUserSleepQuality.insertAdjacentHTML("afterBegin", `<p>The average user's sleep quality is</p> <p><span class="number">${Math.round(sleepInfo.calculateAllUserSleepQuality() *100)/100}</span></p><p>out of 5.</p>`);
+function displaySleepQualityToday(id, sleepInfo, dateString, sleepQualityToday) {
+  const sleepBlock =
+  `<p>Your sleep quality was</p>
+  <p><span class="number">${sleepInfo.calculateDaily(id, dateString, 'sleepQuality')}</span></p>
+  <p>out of 5.</p>`
+  sleepQualityToday.insertAdjacentHTML("afterBegin", sleepBlock);
+}
+
+function displayAvgSleepQuality(sleepInfo, avUserSleepQuality) {
+  const sleepBlock =
+  `<p>The average user's sleep quality is</p>
+  <p><span class="number">${Math.round(sleepInfo.calculateAllUserSleepQuality() *100)/100}</span></p>
+  <p>out of 5.</p>`
+  avUserSleepQuality.insertAdjacentHTML("afterBegin", sleepBlock);
+}
+
+function displaySleepWeek(id, sleepInfo, userStorage, sleepThisWeek, dateString, laterDateString) {
   sleepThisWeek.insertAdjacentHTML('afterBegin', makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(dateString, id, userStorage, 'hoursSlept')));
   sleepEarlierWeek.insertAdjacentHTML('afterBegin', makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(laterDateString, id, userStorage, 'hoursSlept')));
 }
@@ -176,7 +190,6 @@ function getActivityElements(id, activityInfo, dateString, userStorage, laterDat
 }
 
 function addActivityInfo(id, activityInfo, dateString, userStorage, laterDateString, user, winnerId) {
-
   userStairsToday.insertAdjacentHTML("afterBegin", `<p>Stair Count:</p><p>You</><p><span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'flightsOfStairs')}</span></p>`)
   avgStairsToday.insertAdjacentHTML("afterBegin", `<p>Stair Count: </p><p>All Users</p><p><span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'flightsOfStairs')}</span></p>`)
   userStepsToday.insertAdjacentHTML("afterBegin", `<p>Step Count:</p><p>You</p><p><span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'numSteps')}</span></p>`)
