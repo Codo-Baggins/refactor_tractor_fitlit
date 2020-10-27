@@ -24,11 +24,21 @@ import HealthMonitor from './Health-monitor';
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-window.addEventListener('load', startApp);
+window.addEventListener('load', defineVariables);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function startApp() {
+function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek) {
+  historicalWeek.forEach(instance => instance.insertAdjacentHTML('afterBegin', `Week of ${randomHistory}`));
+  addInfoToSidebar(userNow, userRepo);
+  getHyrdationElements(userNowId, hydrationRepo, today, userRepo, randomHistory)
+  getSleepElements(userNowId, sleepRepo, today, userRepo, randomHistory);
+  let winnerNow = makeWinnerID(activityRepo, userNow, today, userRepo);
+  getFriendInfoElements(userNowId, activityRepo, userRepo, today, randomHistory, userNow);
+  getActivityElements(userNowId, activityRepo, today, userRepo, randomHistory, userNow, winnerNow);
+}
+
+function defineVariables() {
   let userList = [];
   makeUsers(userList);
   const userRepo = new UserRepo(userList);
@@ -40,13 +50,7 @@ function startApp() {
   const today = makeToday(userRepo, userNowId, hydrationData);
   const randomHistory = makeRandomDate(userRepo, userNowId, hydrationData);
   const historicalWeek = document.querySelectorAll('.historicalWeek');
-  historicalWeek.forEach(instance => instance.insertAdjacentHTML('afterBegin', `Week of ${randomHistory}`));
-  addInfoToSidebar(userNow, userRepo);
-  getHyrdationElements(userNowId, hydrationRepo, today, userRepo, randomHistory)
-  getSleepElements(userNowId, sleepRepo, today, userRepo, randomHistory);
-  let winnerNow = makeWinnerID(activityRepo, userNow, today, userRepo);
-  getFriendInfoElements(userNowId, activityRepo, userRepo, today, randomHistory, userNow);
-  getActivityElements(userNowId, activityRepo, today, userRepo, randomHistory, userNow, winnerNow);
+  startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek);
 }
 
 function makeUsers(array) {
