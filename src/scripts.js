@@ -5,10 +5,10 @@ import './css/style.scss';
 import './images/person walking on path.jpg';
 import './images/The Rock.jpg';
 
-import userData from './data/users';
-import hydrationData from './data/hydration';
-import sleepData from './data/sleep';
-import activityData from './data/activity';
+//import userData from './data/users';
+// import hydrationData from './data/hydration';
+// import sleepData from './data/sleep';
+// import activityData from './data/activity';
 
 import User from './User';
 import Activity from './Activity';
@@ -25,9 +25,29 @@ import HealthMonitor from './Health-monitor';
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 window.addEventListener('load', defineVariables);
-
+//window.addEventListener('load', getApiData);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+let userData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/users/userData')
+  .then(response => response.json())
+  .then(data => data.userData);
+
+let sleepData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData')
+.then(response => response.json())
+.then(data => data.sleepData);
+
+let activityData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData')
+.then(response => response.json())
+.then(data => data.activityData);
+
+let hydrationData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData')
+.then(response => response.json())
+.then(data => data.hydrationData);
+
+Promise.all([userData, sleepData, activityData, hydrationData]).then(data => {
+  console.log(data[0], data[1], data[2], data[3])
+})
+ 
 function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek) {
   historicalWeek.forEach(instance => instance.insertAdjacentHTML('afterBegin', `Week of ${randomHistory}`));
   addInfoToSidebar(userNow, userRepo);
@@ -53,10 +73,10 @@ function defineVariables() {
   startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek);
 }
 
-function makeUsers(array) {
+function makeUsers(dataSet) {
   userData.forEach(function(dataItem) {
     let user = new User(dataItem);
-    array.push(user);
+    dataSet.push(user);
   })
 }
 
