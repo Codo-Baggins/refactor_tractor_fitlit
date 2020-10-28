@@ -5,7 +5,7 @@ import './css/style.scss';
 import './images/person walking on path.jpg';
 import './images/The Rock.jpg';
 
-//import userData from './data/users';
+// import userData from './data/users';
 // import hydrationData from './data/hydration';
 // import sleepData from './data/sleep';
 // import activityData from './data/activity';
@@ -24,7 +24,7 @@ import HealthMonitor from './Health-monitor';
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-window.addEventListener('load', defineVariables);
+//window.addEventListener('load', defineVariables);
 //window.addEventListener('load', getApiData);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -45,7 +45,8 @@ let hydrationData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydr
 .then(data => data.hydrationData);
 
 Promise.all([userData, sleepData, activityData, hydrationData]).then(data => {
-  console.log(data[0], data[1], data[2], data[3])
+  //console.log(data[0], data[1], data[2], data[3])
+  defineVariables(data[0], data[1], data[2], data[3])
 })
  
 function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek) {
@@ -58,9 +59,9 @@ function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, u
   getActivityElements(userNowId, activityRepo, today, userRepo, randomHistory, userNow, winnerNow);
 }
 
-function defineVariables() {
+function defineVariables(userData, sleepData, activityData, hydrationData) {
   let userList = [];
-  makeUsers(userList);
+  makeUsers(userList, userData);
   const userRepo = new UserRepo(userList);
   const hydrationRepo = new Hydration(hydrationData);
   const sleepRepo = new Sleep(sleepData);
@@ -73,7 +74,7 @@ function defineVariables() {
   startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek);
 }
 
-function makeUsers(dataSet) {
+function makeUsers(dataSet, userData) {
   userData.forEach(function(dataItem) {
     let user = new User(dataItem);
     dataSet.push(user);
