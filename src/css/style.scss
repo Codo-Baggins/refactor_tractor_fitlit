@@ -252,3 +252,17 @@ h1 {
   font-weight: bold;
   font-family: sans-serif;
 }
+
+.todays-metrics {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: space-between;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+  align-items:center;
+}
