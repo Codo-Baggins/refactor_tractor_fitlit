@@ -47,26 +47,25 @@
           <h2>HYDRATION</h2>
           <input type="date">
           <!-- <label>Ounces Consumed</label> -->
-          <input id="ounces" type="number" placeholder="Ounces Consumed">
-          <input for="ounces" type="submit">
-        </form class="activity">
-
+          <input id="hydration-metric" type="number" min="0" placeholder="Ounces Consumed">
+          <input for="hydration-metric" type="submit">
+        </form>
         <form class="activity form">
           <h2>ACTIVITY</h2>
           <input type="date">
           <!-- <label>Steps Walked</label> -->
-          <input id="ounces" type="number" placeholder="Number Of Steps">
-          <input id="ounces" type="number" placeholder="Flights Of Stairs">
-          <input for="ounces" type="submit">
+          <input class="activity-metric" type="number" min="0" placeholder="Number Of Steps">
+          <input class="activity-metric" type="number" min="0" placeholder="Flights Of Stairs">
+          <input for="activity-metric" type="submit">
         </form >
         <form class="sleep form">
           <h2>SLEEP</h2>
           <input type="date">
           <!-- <label>Hours Slept</label> -->
-          <input id="ounces" type="number" placeholder="Hours Slept">
-          <input max="5" id="ounces" type="number" placeholder="Sleep Quality (0-5)">
+          <input class="sleep-metric" type="number" min="0" max="24" placeholder="Hours Slept">
+          <input class="sleep-metric" type="number" min="0" max="5" placeholder="Sleep Quality (0-5)">
           <!-- <details>Provide a number 1-5</details> -->
-          <input for="ounces" type="submit">
+          <input for="sleep-metric" type="submit">
         </form>
       </section>
       <section class="main-column-hydration">
