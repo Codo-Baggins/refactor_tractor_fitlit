@@ -210,7 +210,7 @@ function getActivityElements(id, activityInfo, dateString, userStorage, laterDat
   displayBestUserSteps(user, activityInfo, userStorage, winnerId, dateString)
   displayUserMinsWeek(id, activityInfo, userStorage, dateString);
   displayUserStairsWeek(id, activityInfo, userStorage, dateString)
-  displayUserStepsWeek(id, activityInfo, userStorage, activityInfo, dateString)
+  displayUserStepsWeek(id, activityInfo, userStorage, dateString);
   displayAvgMinsToday(activityInfo, dateString, userStorage)
   displayUserMinsToday(activityInfo, id, dateString, userStorage);
   displayAvgStepsToday(activityInfo, dateString, userStorage)
