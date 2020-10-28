@@ -127,12 +127,15 @@ h1 {
 
 .infoContainer-cardContainer-card-vertical {
   width: 100%;
-  background-color: white;
   border: 1px solid black;
   display: flex;
   flex-direction: row;
   margin: 1%;
   overflow: scroll;
+}
+
+.sleep-cards-vertical {
+  background-color: #5BC8AC;
 }
 
 .card-today-hydration {
@@ -184,6 +187,7 @@ h1 {
   flex-direction: column;
   justify-content: flex-start;
   width: 50%;
+  overflow-wrap: break-word;
 }
 
 .card-history-sleep {
