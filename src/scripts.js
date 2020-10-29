@@ -15,40 +15,110 @@ import Activity from './Activity';
 import Hydration from './Hydration';
 import Sleep from './Sleep';
 import UserRepo from './User-repo';
-
 import HealthMonitor from './Health-monitor';
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+const userForms = document.querySelector('.todays-metrics');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+userForms.addEventListener('click', handleMetricSubmits);
 
 //window.addEventListener('load', defineVariables);
 //window.addEventListener('load', getApiData);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+function handleMetricSubmits(event) {
+  event.preventDefault();
+  if (event.target.className === "hydration-submit") {
+    evaluateHydrationInput();
+  } else if (event.target.className === "sleep-submit") {
+    evaluateSleepInput()
+  } else if (event.target.className === "activity-submit") {
+    evaluateActivityInput()
+  }
+}
+
+  function evaluateHydrationInput(event) {
+    const dateInput = userForms.children[0].children[1]
+    console.log(dateInput.value);
+    const ouncesInput = dateInput.nextElementSibling
+    if (dateInput.value !== "" && ouncesInput.value !== "") {
+      const dataToPost = createDataObject(dateInput, ouncesInput);
+      postHyrdationSubmission(dataToPost);
+    }
+  }
+
+  function createDataObject(dateInput, ouncesInput) {
+    return {"userID": user.id, "date": dateInput.value, "numOunces": parseInt(ouncesInput.value)}
+  }
+
+  function postHyrdationSubmission(dataToPost) {
+    console.log(dataToPost)
+    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData", {
+      method: 'POST',
+      headers: {
+  	'Content-Type': 'application/json'
+    },
+      body: JSON.stringify(dataToPost),
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+    .catch(error => console.log(error.message))
+  }
+
+  function evaluateSleepInput() {
+    const dateInput = userForms.children[1].children[0]
+    const sleepAmount = dateInput.nextElementSibling
+    const sleepQuality = sleepAmount.nextElementSibling
+    if (dateInput.value !== "" && sleepAmount.value !== "" && sleepQuality.value !== "") {
+      // postSleepSubmission(dateInput, sleepAmount, sleepQuality);
+    }
+  }
+
+  function evaluateActivityInput() {
+    const dateInput = userForms.children[2].children[0]
+    const stepCount = dateInput.nextElementSibling
+    const stairCount = sleepAmount.nextElementSibling
+    if (dateInput.value !== "" && sleepAmount.value !== "" && sleepQuality.value !== "") {
+      // postSleepSubmission(dateInput, stepCount, stairCount);
+    }
+  }
+
+
+  //EVALUATING IF THE EVENT TARGET IS SOMETHING WE WANT
+
+  //if the event target classname === "classname hydration" -- invoke a new function to do hydration stuff
+  //else if the event target classnam === "classname sleep"
+
+
+
 let userData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/users/userData')
   .then(response => response.json())
-  .then(data => data.userData);
+  .then(data => data.userData)
+  // .catch(error => console.log(error.message))
 
 let sleepData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData')
-.then(response => response.json())
-.then(data => data.sleepData);
+  .then(response => response.json())
+  .then(data => data.sleepData)
+  // .catch(error => console.log(error.message))
 
 let activityData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData')
-.then(response => response.json())
-.then(data => data.activityData);
+  .then(response => response.json())
+  .then(data => data.activityData)
+  // .catch(error => console.log(error.message))
 
 let hydrationData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData')
-.then(response => response.json())
-.then(data => data.hydrationData);
+  .then(response => response.json())
+  .then(data => data.hydrationData)
+  // .catch(error => console.log(error.message))
 
 Promise.all([userData, sleepData, activityData, hydrationData]).then(data => {
   //console.log(data[0], data[1], data[2], data[3])
   defineVariables(data[0], data[1], data[2], data[3])
 })
- 
+
 function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek) {
   historicalWeek.forEach(instance => instance.insertAdjacentHTML('afterBegin', `Week of ${randomHistory}`));
   addInfoToSidebar(userNow, userRepo);
@@ -62,10 +132,10 @@ function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, u
 function defineVariables(userData, sleepData, activityData, hydrationData) {
   let userList = [];
   makeUsers(userList, userData);
-  const userRepo = new UserRepo(userList);
-  const hydrationRepo = new Hydration(hydrationData);
-  const sleepRepo = new Sleep(sleepData);
-  const activityRepo = new Activity(activityData);
+  global.userRepo = new UserRepo(userList);
+  global.hydrationRepo = new Hydration(hydrationData);
+  global.sleepRepo = new Sleep(sleepData);
+  global.activityRepo = new Activity(activityData);
   const userNowId = pickUser();
   const userNow = getUserById(userNowId, userRepo);
   const today = makeToday(userRepo, userNowId, hydrationData);
@@ -76,7 +146,7 @@ function defineVariables(userData, sleepData, activityData, hydrationData) {
 
 function makeUsers(dataSet, userData) {
   userData.forEach(function(dataItem) {
-    let user = new User(dataItem);
+    global.user = new User(dataItem);
     dataSet.push(user);
   })
 }
