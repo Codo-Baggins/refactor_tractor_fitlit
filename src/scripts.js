@@ -56,7 +56,6 @@ function handleMetricSubmits(event) {
   }
 
   function postHyrdationSubmission(dataToPost) {
-    console.log(dataToPost)
     fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData", {
       method: 'POST',
       headers: {
@@ -86,7 +85,6 @@ function handleMetricSubmits(event) {
   }
 
   function postSleepSubmission(dataToPost) {
-    console.log(dataToPost)
     fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData", {
       method: 'POST',
       headers: {
@@ -99,12 +97,32 @@ function handleMetricSubmits(event) {
   }
 
   function evaluateActivityInput() {
-    const dateInput = userForms.children[2].children[0]
+    const dateInput = userForms.children[1].children[1]
     const stepCount = dateInput.nextElementSibling
-    const stairCount = sleepAmount.nextElementSibling
-    if (dateInput.value !== "" && sleepAmount.value !== "" && sleepQuality.value !== "") {
-      // postSleepSubmission(dateInput, stepCount, stairCount);
+    const minutesActive = stepCount.nextElementSibling
+    const stairCount = minutesActive.nextElementSibling
+    if (dateInput.value !== "" && minutesActive.value !== "" && stepCount.value !== "" && stairCount.value !== "") {
+      const dataToPost = createActivityObject(dateInput, stepCount, minutesActive, stairCount)
+      postActvitySubmission(dataToPost);
     }
+  }
+
+  function createActivityObject(dateInput, stepCount, minutesActive, stairCount) {
+    const formattedDate = dateInput.value.replace(/-/g,"/");
+    return {"userID": user.id, "date": formattedDate, "numSteps": parseInt(stepCount.value), "minutesActive": parseInt(minutesActive.value), "flightsOfStairs": parseInt(stairCount.value)}
+  }
+
+  function postActvitySubmission(dataToPost) {
+    console.log(dataToPost)
+    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData", {
+      method: 'POST',
+      headers: {
+  	'Content-Type': 'application/json'
+    },
+      body: JSON.stringify(dataToPost),
+    })
+    .then(response => response.json())
+    .catch(error => console.log(error.message))
   }
 
 
