@@ -45,14 +45,14 @@
 
         <form class="hydration form">
           <h2>HYDRATION</h2>
-          <input type="text" required pattern="\d{4}/\d{2}/\d{2}">
+          <input type="date" required pattern="\d{4}/\d{2}/\d{2}">
           <!-- <label>Ounces Consumed</label> -->
           <input id="hydration-metric" type="number" min="0" placeholder="Ounces Consumed">
           <input for="hydration-metric" type="submit" class="hydration-submit">
         </form>
         <form class="activity form">
           <h2>ACTIVITY</h2>
-          <input type="text" required pattern="\d{4}/\d{2}/\d{2}">
+          <input type="date" required pattern="\d{4}/\d{2}/\d{2}">
           <!-- <label>Steps Walked</label> -->
           <input class="activity-metric" type="number" min="0" placeholder="Number Of Steps">
           <input class="activity-metric" type="number" min="0" placeholder="Flights Of Stairs">
@@ -60,7 +60,7 @@
         </form >
         <form class="sleep form">
           <h2>SLEEP</h2>
-          <input type="text" required pattern="\d{4}/\d{2}/\d{2}">
+          <input type="date" required pattern="\d{4}/\d{2}/\d{2}">
           <!-- <label>Hours Slept</label> -->
           <input class="sleep-metric" type="number" min="0" max="24" placeholder="Hours Slept">
           <input class="sleep-metric" type="number" min="0" max="5" placeholder="Sleep Quality (0-5)">

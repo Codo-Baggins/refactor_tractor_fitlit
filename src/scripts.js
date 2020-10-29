@@ -45,13 +45,14 @@ function handleMetricSubmits(event) {
     console.log(dateInput.value);
     const ouncesInput = dateInput.nextElementSibling
     if (dateInput.value !== "" && ouncesInput.value !== "") {
-      const dataToPost = createDataObject(dateInput, ouncesInput);
+      const dataToPost = createHydrationObject(dateInput, ouncesInput);
       postHyrdationSubmission(dataToPost);
     }
   }
 
-  function createDataObject(dateInput, ouncesInput) {
-    return {"userID": user.id, "date": dateInput.value, "numOunces": parseInt(ouncesInput.value)}
+  function createHydrationObject(dateInput, ouncesInput) {
+    const formattedDate = dateInput.value.replace(/-/g,"/");
+    return {"userID": user.id, "date": formattedDate, "numOunces": parseInt(ouncesInput.value)}
   }
 
   function postHyrdationSubmission(dataToPost) {
@@ -64,17 +65,37 @@ function handleMetricSubmits(event) {
       body: JSON.stringify(dataToPost),
     })
     .then(response => response.json())
-    .then(json => console.log(json))
     .catch(error => console.log(error.message))
   }
 
   function evaluateSleepInput() {
-    const dateInput = userForms.children[1].children[0]
+    const dateInput = userForms.children[2].children[1]
     const sleepAmount = dateInput.nextElementSibling
     const sleepQuality = sleepAmount.nextElementSibling
+    console.log(dateInput, sleepAmount, sleepQuality)
     if (dateInput.value !== "" && sleepAmount.value !== "" && sleepQuality.value !== "") {
-      // postSleepSubmission(dateInput, sleepAmount, sleepQuality);
+      console.log("hello");
+      const dataToPost = createSleepObject(dateInput, sleepAmount, sleepQuality)
+      postSleepSubmission(dataToPost);
     }
+  }
+
+  function createSleepObject(dateInput, sleepAmount, sleepQuality) {
+    const formattedDate = dateInput.value.replace(/-/g,"/");
+    return {"userID": user.id, "date": formattedDate, "hoursSlept": parseInt(sleepAmount.value), "sleepQuality": parseInt(sleepQuality.value)}
+  }
+
+  function postSleepSubmission(dataToPost) {
+    console.log(dataToPost)
+    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData", {
+      method: 'POST',
+      headers: {
+  	'Content-Type': 'application/json'
+    },
+      body: JSON.stringify(dataToPost),
+    })
+    .then(response => response.json())
+    .catch(error => console.log(error.message))
   }
 
   function evaluateActivityInput() {
