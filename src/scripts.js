@@ -45,7 +45,7 @@ function loadMonitorData(test) {
   let sleepData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData')
     .then(response => response.json())
     .then(data => data.sleepData)
-    .catch(error => console.log("error.message"))
+    // .catch(error => console.log("error.message"))
 
   let activityData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData')
     .then(response => response.json())
@@ -253,7 +253,7 @@ function makeToday(userStorage, id, dataSet) {
 
 function makeRandomDate(userStorage, id, dataSet) {
   var sortedArray = userStorage.makeSortedUserArray(id, dataSet);
-  return sortedArray[Math.floor(Math.random() * sortedArray.length + 1)].date
+  return sortedArray[Math.floor(Math.random() * sortedArray.length)].date
 }
 
 function getHyrdationElements(id, hydrationInfo, dateString, userStorage, laterDateString) {
@@ -300,10 +300,11 @@ function getSleepElements(id, sleepInfo, dateString, userStorage, laterDateStrin
 
 //THIS FUNCTION ISSUE
 function displaySleepQualityToday(id, sleepInfo, dateString) {
+  const sleeping = sleepInfo.calculateDaily(id, dateString, 'sleepQuality')
   const sleepQualityToday = document.getElementById('sleepQualityToday');
   const sleepBlock =
   `<p>Your sleep quality was</p>
-  <p><span class="number">${sleepInfo.calculateDaily(id, dateString, 'sleepQuality')}</span></p>
+  <p><span class="number">${typeof sleeping === "number" ? sleeping : 0}</span></p>
   <p>out of 5.</p>`
   sleepQualityToday.insertAdjacentHTML("afterBegin", sleepBlock);
 }

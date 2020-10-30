@@ -51,7 +51,10 @@ class Activity extends HealthMonitor {
 
   userDataForToday(id, date, userRepo, relevantData) {
     const userData = userRepo.getDataFromUserID(id, this.dataSet);
-    return userData.find(data => data.date === date)[relevantData];
+    const user = userData.find(data => data.date === date)
+    if (user && user[relevantData]) {
+      return user[relevantData];
+    }
   }
 
   userDataForWeek(id, date, userRepo, releventData) {
@@ -112,7 +115,9 @@ class Activity extends HealthMonitor {
   getWinnerId(user, date, userRepo) {
     const rankedList = this.getFriendsAverageStepsForWeek(user, date, userRepo);
     const keysList = rankedList.map(listItem => Object.keys(listItem));
-    return parseInt(keysList[0].join(''))
+    if (keysList.length > 0) {
+      return parseInt(keysList[0].join(''))
+    }
   }
 }
 
