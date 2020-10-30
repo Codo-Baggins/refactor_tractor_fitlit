@@ -40,7 +40,8 @@ function createRandomUser(userData) {
   loadMonitorData()
 }
 
-function loadMonitorData(test) {
+function loadMonitorData() {
+  console.log("hey")
 
   let sleepData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData')
     .then(response => response.json())
@@ -128,6 +129,7 @@ function handleMetricSubmits(event) {
       body: JSON.stringify(dataToPost),
     })
     .then(response => response.json())
+    .then(message => loadMonitorData())
     .catch(error => console.log(error.message))
   }
 
@@ -157,6 +159,7 @@ function handleMetricSubmits(event) {
       body: JSON.stringify(dataToPost),
     })
     .then(response => response.json())
+    .then(message => loadMonitorData())
     .catch(error => console.log(error.message))
   }
 
@@ -264,24 +267,30 @@ function getHyrdationElements(id, hydrationInfo, dateString, userStorage, laterD
 
 function diplayDayHydration(id, hydrationInfo, dateString) {
   const hydrationToday = document.getElementById('hydrationToday');
+  hydrationToday.innerHTML = ""
+  const hydrationOunces = hydrationInfo.calculateDaily(id, dateString, 'numOunces');
   const hydrationBlock =
   `<p>You drank</p>
-  <p><span class="number">${hydrationInfo.calculateDaily(id, dateString, 'numOunces')}</span></p>
+  <p><span class="number">${typeof hydrationOunces === "number" ? hydrationOunces : 0}</span></p>
   <p>oz water today.</p>`;
   hydrationToday.insertAdjacentHTML('afterBegin', hydrationBlock);
 }
 
 function displayHydrationAvg(id, hydrationInfo) {
   const hydrationAverage = document.getElementById('hydrationAverage');
+  hydrationAverage.innerHTML = ""
+  const hydrationOunces = hydrationInfo.calculateAverage(id, 'numOunces');
   const hydrationBlock = `<p>Your average water intake is</p>
-  <p><span class="number">${hydrationInfo.calculateAverage(id, 'numOunces')}</span></p>
+  <p><span class="number">${typeof hydrationOunces === "number" ? hydrationOunces : 0}</span></p>
   <p>oz per day.</p>`;
   hydrationAverage.insertAdjacentHTML('afterBegin', hydrationBlock)
 }
 
 function displayHyrdrationWeek(id, hydrationInfo, userStorage, laterDateString) {
   const hydrationThisWeek = document.getElementById('hydrationThisWeek');
+  hydrationThisWeek.innerHTML = ""
   const hydrationEarlierWeek = document.getElementById('hydrationEarlierWeek');
+  hydrationEarlierWeek.innerHTML = ""
   const thisWeekHydrationHTML = makeHydrationHTML(id, hydrationInfo, userStorage, hydrationInfo.calculateFirstWeekOunces(userStorage, id));
   const earlierWeekHydrationHTML = makeHydrationHTML(id, hydrationInfo, userStorage, hydrationInfo.calculateSpecifiedWeekData(laterDateString, id, userStorage, 'numOunces'));
   hydrationThisWeek.insertAdjacentHTML('afterBegin', thisWeekHydrationHTML);
@@ -300,17 +309,19 @@ function getSleepElements(id, sleepInfo, dateString, userStorage, laterDateStrin
 
 //THIS FUNCTION ISSUE
 function displaySleepQualityToday(id, sleepInfo, dateString) {
-  const sleeping = sleepInfo.calculateDaily(id, dateString, 'sleepQuality')
+  const sleepNumber = sleepInfo.calculateDaily(id, dateString, 'sleepQuality')
   const sleepQualityToday = document.getElementById('sleepQualityToday');
+  sleepQualityToday.innerHTML = "";
   const sleepBlock =
   `<p>Your sleep quality was</p>
-  <p><span class="number">${typeof sleeping === "number" ? sleeping : 0}</span></p>
+  <p><span class="number">${typeof sleepNumber === "number" ? sleepNumber : 0}</span></p>
   <p>out of 5.</p>`
   sleepQualityToday.insertAdjacentHTML("afterBegin", sleepBlock);
 }
 
 function displayAvgSleepQuality(sleepInfo) {
   const avUserSleepQuality = document.getElementById('avUserSleepQuality');
+  avUserSleepQuality.innerHTML = ""
   const sleepBlock =
   `<p>The average user's sleep quality is</p>
   <p><span class="number">${Math.round(sleepInfo.calculateAllUserSleepQuality() *100)/100}</span></p>
@@ -337,15 +348,15 @@ function makeSleepQualityHTML(id, sleepInfo, userStorage, method) {
 
 function getActivityElements(id, activityInfo, dateString, userStorage, laterDateString, user, winnerId) {
   displayBestUserSteps(user, activityInfo, userStorage, winnerId, dateString)
-  displayUserMinsWeek(id, activityInfo, userStorage, dateString);
-  displayUserStairsWeek(id, activityInfo, userStorage, dateString)
-  displayUserStepsWeek(id, activityInfo, userStorage, dateString);
   displayAvgMinsToday(activityInfo, dateString, userStorage)
   displayUserMinsToday(activityInfo, id, dateString, userStorage);
   displayAvgStepsToday(activityInfo, dateString, userStorage)
   displayUserStepsToday(activityInfo, id, dateString, userStorage)
   displayAvgStairsToday(activityInfo, dateString, userStorage)
   displayUserStairsToday(activityInfo, id, dateString, userStorage);
+  displayUserMinsWeek(id, activityInfo, userStorage, dateString);
+  displayUserStairsWeek(id, activityInfo, userStorage, dateString)
+  displayUserStepsWeek(id, activityInfo, userStorage, dateString);
 }
 
 function displayBestUserSteps(user, activityInfo, userStorage, winnerId, dateString) {
@@ -356,81 +367,95 @@ function displayBestUserSteps(user, activityInfo, userStorage, winnerId, dateStr
 
 function displayUserMinsWeek(id, activityInfo, userStorage, dateString) {
   const userMinutesThisWeek = document.getElementById('userMinutesThisWeek');
+  userMinutesThisWeek.innerHTML = ""
   const minsBlock = makeMinutesHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "minutesActive"))
   userMinutesThisWeek.insertAdjacentHTML("afterBegin", minsBlock);
 }
 
 function displayUserStairsWeek(id, activityInfo, userStorage, dateString) {
   const userStairsThisWeek = document.getElementById('userStairsThisWeek');
+  userStairsThisWeek.innerHTML = ""
   const stairsBlock = makeStairsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "flightsOfStairs"))
   userStairsThisWeek.insertAdjacentHTML("afterBegin", stairsBlock);
 }
 
 function displayUserStepsWeek(id, activityInfo, userStorage, dateString) {
   const userStepsThisWeek = document.getElementById('userStepsThisWeek');
+  userStepsThisWeek.innerHTML = "";
   const stepsBlock = makeStepsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "numSteps"))
   userStepsThisWeek.insertAdjacentHTML("afterBegin", stepsBlock);
 }
 
 function displayAvgMinsToday(activityInfo, dateString, userStorage) {
   const avgMinutesToday = document.getElementById('avgMinutesToday');
+  avgMinutesToday.innerText = ""
+  const minutesNumber = activityInfo.getAllUserAverageForDay(dateString, userStorage, 'minutesActive')
   const minsBlock =
   `<p>Active Minutes:</p>
   <p>All Users</p>
   <p>
-  <span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'minutesActive')}</span>
+  <span class="number">${typeof minutesNumber === "number" ? minutesNumber : 0}</span>
   </p>`
   avgMinutesToday.insertAdjacentHTML("afterBegin", minsBlock)
 }
 
 function displayUserMinsToday(activityInfo, id, dateString, userStorage) {
   const userMinutesToday = document.getElementById('userMinutesToday');
+  userMinutesToday.innerHTML = ""
+  const minutesNumber = activityInfo.userDataForToday(id, dateString, userStorage, 'minutesActive')
   const minsBlock =
   `<p>Active Minutes:</p>
   <p>You</p>
   <p>
-  <span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'minutesActive')}</span>
+  <span class="number">${typeof minutesNumber === "number" ? minutesNumber : 0}</span>
   </p>`
   userMinutesToday.insertAdjacentHTML("afterBegin", minsBlock);
 }
 
 function displayAvgStepsToday(activityInfo, dateString, userStorage) {
   const avgStepsToday = document.getElementById('avgStepsToday');
+  const stepsNumber = activityInfo.getAllUserAverageForDay(dateString, userStorage, 'numSteps')
   const stepsBlock =
   `<p>Step Count:</p>
   <p>All Users</p>
   <p>
-  <span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'numSteps')}</span>
+  <span class="number">${typeof stepsNumber === "number" ? stepsNumber : 0}</span>
   </p>`
   avgStepsToday.insertAdjacentHTML("afterBegin", stepsBlock)
 }
 
 function displayUserStepsToday(activityInfo, id, dateString, userStorage) {
   const userStepsToday = document.getElementById('userStepsToday');
+  userStepsToday.innerHTML = "";
+  const stepsNumber = activityInfo.userDataForToday(id, dateString, userStorage, 'numSteps')
   const stepsBlock =
   `<p>Step Count:</p><p>You</p>
   <p>
-  <span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'numSteps')}</span>
+  <span class="number">${typeof stepsNumber === "number" ? stepsNumber : 0}</span>
   </p>`
   userStepsToday.insertAdjacentHTML("afterBegin", stepsBlock);
 }
 
 function displayAvgStairsToday(activityInfo, dateString, userStorage) {
   const avgStairsToday = document.getElementById('avgStairsToday');
+  avgStairsToday.innerHTML = ""
+  const stairsNumber = activityInfo.getAllUserAverageForDay(dateString, userStorage, 'flightsOfStairs')
   const stairsBlock = `<p>Stair Count: </p>
   <p>All Users</p>
   <p>
-  <span class="number">${activityInfo.getAllUserAverageForDay(dateString, userStorage, 'flightsOfStairs')}</span>
+  <span class="number">${typeof stairsNumber === "number" ? stairsNumber : 0}</span>
   </p>`
   avgStairsToday.insertAdjacentHTML("afterBegin", stairsBlock)
 }
 
 function displayUserStairsToday(activityInfo, id, dateString, userStorage) {
   const userStairsToday = document.getElementById('userStairsToday');
+  userStairsToday.innerHTML = ""
+  const stairsNumber = activityInfo.userDataForToday(id, dateString, userStorage, 'flightsOfStairs')
   const stairsBlock =
   `<p>Stair Count:</p>
   <p>You</><p>
-  <span class="number">${activityInfo.userDataForToday(id, dateString, userStorage, 'flightsOfStairs')}</span>
+  <span class="number">${typeof stairsNumber === "number" ? stairsNumber : 0}</span>
   </p>`
   userStairsToday.insertAdjacentHTML("afterBegin", stairsBlock)
 }
