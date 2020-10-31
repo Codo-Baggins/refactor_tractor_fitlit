@@ -55,6 +55,7 @@ class Activity extends HealthMonitor {
     if (user && user[relevantData]) {
       return user[relevantData];
     }
+    return 0;
   }
 
   userDataForWeek(id, date, userRepo, releventData) {

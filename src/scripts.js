@@ -417,6 +417,7 @@ function displayUserMinsToday(activityInfo, id, dateString, userStorage) {
 
 function displayAvgStepsToday(activityInfo, dateString, userStorage) {
   const avgStepsToday = document.getElementById('avgStepsToday');
+  avgStepsToday.innerHTML = '';
   const stepsNumber = activityInfo.getAllUserAverageForDay(dateString, userStorage, 'numSteps')
   const stepsBlock =
   `<p>Step Count:</p>
@@ -485,17 +486,20 @@ function getFriendInfoElements(id, activityInfo, userStorage, dateString, laterD
 
 function displayBigWinner(activityInfo, user, dateString, userStorage) {
   const bigWinner = document.getElementById('bigWinner');
+  bigWinner.innerHTML = '';
   bigWinner.insertAdjacentHTML('afterBegin', `THIS WEEK'S WINNER! ${activityInfo.showcaseWinner(user, dateString, userStorage)} steps`)
 }
 
 function displayFriendListHistory(id, activityInfo, userStorage, user, dateString) {
   const friendChallengeListHistory = document.getElementById('friendChallengeListHistory');
+  friendChallengeListHistory.innerHTML = '';
   const friendBlock = makeFriendChallengeHTML(id, activityInfo, userStorage, activityInfo.showChallengeListAndWinner(user, dateString, userStorage))
   friendChallengeListHistory.insertAdjacentHTML("afterBegin", friendBlock);
 }
 
 function displayStreakListMins(id, activityInfo, userStorage) {
   const streakListMinutes = document.getElementById('streakListMinutes')
+  streakListMinutes.innerHTML = '';
   const streakBlock = makeStepStreakHTML(id, activityInfo, userStorage, activityInfo.getStreak(userStorage, id, 'minutesActive'))
   streakListMinutes.insertAdjacentHTML("afterBegin", streakBlock);
 }
@@ -508,6 +512,7 @@ function displayStreakList(id, activityInfo, userStorage) {
 
 function displayFriendChallengeListToday(id, activityInfo, userStorage, user, dateString) {
   const friendChallengeListToday = document.getElementById('friendChallengeListToday');
+  friendChallengeListToday.innerHTML = '';
   const challengeBlock = makeFriendChallengeHTML(id, activityInfo, userStorage, activityInfo.showChallengeListAndWinner(user, dateString, userStorage))
   friendChallengeListToday.insertAdjacentHTML("afterBegin", challengeBlock);
 }
