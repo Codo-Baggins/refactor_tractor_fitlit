@@ -47,7 +47,7 @@
           <h2>HYDRATION</h2>
           <input aria-label="date-input" class="hydration-date-input" label="date" type="date" required pattern="\d{4}/\d{2}/\d{2}">
           <input aria-label="hydration-ounces-input"class="hydration-ounces-input" name="ounces" id="hydration-metric" type="number" min="0" placeholder="Ounces Consumed"><br>
-          <input name="hydration-metric" type="submit" class="hydration-submit">
+          <button name="hydration-metric" type="button" class="hydration-submit submit-btn">Submit</button>
         </form>
         <form class="activity form">
           <h2>ACTIVITY</h2>
@@ -55,14 +55,14 @@
           <input aria-label="steps-input"class="steps-walked-input" name="steps-walked"class="activity-metric" type="number" min="0" placeholder="Number Of Steps">
           <input aria-label="steps-input" class="activity-metric minutes-active-input" type="number" min="0" placeholder="Minutes Active">
           <input aria-label="minutes-active-input" class="activity-metric stairs-input" type="number" min="0" placeholder="Flights Of Stairs">
-          <input type="submit" class="activity-submit">
+          <button type="button" class="activity-submit submit-btn">Submit</button>
         </form >
         <form class="sleep form">
           <h2>SLEEP</h2>
           <input aria-label="date-input" class="sleep-date-input" type="date" required pattern="\d{4}/\d{2}/\d{2}">
           <input aria-label="hours-slept-input" class="sleep-metric hours-slept-input" type="number" min="0" max="24" placeholder="Hours Slept">
           <input aria-label="sleep-quality-input" class="sleep-metric sleep-quality-input" type="number" min="0" max="5" placeholder="Sleep Quality (0-5)">
-          <input for="sleep-metric" type="submit" class="sleep-submit">
+          <button for="sleep-metric" type="button" class="sleep-submit submit-btn">Submit</button>
         </form>
       </section>
       <section class="main-column-hydration">

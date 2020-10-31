@@ -6,3 +6,13 @@ $sleep-color: #EC96A4;
 $white: white;
 $grey:  #9A9DAB;
 $black: black;
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}

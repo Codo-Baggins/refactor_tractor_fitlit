@@ -1,5 +1,3 @@
-
-import './css/_variables.scss';
 import './css/style.scss';
 
 import './images/person walking on path.jpg';
@@ -64,12 +62,11 @@ function loadMonitorData() {
 }
 
 function handleMetricSubmits(event) {
-  event.preventDefault();
-  if (event.target.className === "hydration-submit") {
+  if (event.target.classList.contains("hydration-submit")) {
     evaluateHydrationInput();
-  } else if (event.target.className === "sleep-submit") {
+  } else if (event.target.classList.contains("sleep-submit")) {
     evaluateSleepInput()
-  } else if (event.target.className === "activity-submit") {
+  } else if (event.target.classList.contains("activity-submit")) {
     evaluateActivityInput()
   }
 }
