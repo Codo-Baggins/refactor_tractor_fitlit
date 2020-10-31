@@ -13,7 +13,7 @@ body {
 
 h1 {
   text-align: center;
-  color: #ffffff;
+  color: black;
   height: 80px;
   padding-top: 10px;
 }
@@ -51,7 +51,6 @@ h1 {
 }
 
 .sidebar-header-line {
-  color: #ffffff;
   border: 1px solid black;
   margin: 1em 1em 0 1em;
   height: 0;
@@ -250,20 +249,19 @@ h1 {
   align-items: space-between;
 }
 
-form {
+.hydration {
   @include flex-column;
   align-items: center;
-}
-
-.hydration {
   background-color: $hydration-color;
 }
 
 .activity {
+  @extend .hydration;
   background-color: $activity-color;
 }
 
 .sleep {
+  @extend .hydration;
   background-color: $sleep-color;
 }
 
