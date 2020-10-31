@@ -30,7 +30,7 @@ h1 {
 }
 
 .body-sidebar-sidebarContainer {
-  background-color: #9A9DAB;
+  background-color: adjust-hue(#9A9DAB, -270%);
   border: 1px solid black;
   @include flex-column;
   align-items: center;
