@@ -1,5 +1,3 @@
-
-import './css/base.scss';
 import './css/style.scss';
 
 import './images/person walking on path.jpg';
@@ -64,12 +62,11 @@ function loadMonitorData() {
 }
 
 function handleMetricSubmits(event) {
-  event.preventDefault();
-  if (event.target.className === "hydration-submit") {
+  if (event.target.classList.contains("hydration-submit")) {
     evaluateHydrationInput();
-  } else if (event.target.className === "sleep-submit") {
+  } else if (event.target.classList.contains("sleep-submit")) {
     evaluateSleepInput()
-  } else if (event.target.className === "activity-submit") {
+  } else if (event.target.classList.contains("activity-submit")) {
     evaluateActivityInput()
   }
 }
@@ -97,12 +94,16 @@ function handleMetricSubmits(event) {
       body: JSON.stringify(dataToPost),
     })
     .then(response => response.json())
-    .then(message => handleHydrationSuccess(message))
+    .then(message => handlePostSuccess('.hydration'))
     .catch(error => console.log(error.message))
   }
 
-  function handleHydrationSuccess(message) {
+  function handlePostSuccess(className) {
+    let form = document.querySelector(`${className}`)
     loadMonitorData()
+    displaySuccessMessage(form)
+    form.reset();
+    setTimeout(function() { form.lastChild.innerHTML = '' }, 5000);
   }
 
   function evaluateSleepInput() {
@@ -129,7 +130,7 @@ function handleMetricSubmits(event) {
       body: JSON.stringify(dataToPost),
     })
     .then(response => response.json())
-    .then(message => loadMonitorData())
+    .then(message => handlePostSuccess('.sleep'))
     .catch(error => console.log(error.message))
   }
 
@@ -159,7 +160,7 @@ function handleMetricSubmits(event) {
       body: JSON.stringify(dataToPost),
     })
     .then(response => response.json())
-    .then(message => loadMonitorData())
+    .then(message => handlePostSuccess('.activity'))
     .catch(error => console.log(error.message))
   }
 
@@ -523,4 +524,10 @@ function makeFriendChallengeHTML(id, activityInfo, userStorage, method) {
 
 function makeStepStreakHTML(id, activityInfo, userStorage, method) {
   return method.map(streakData => `<li class="historical-list-listItem">${streakData}!</li>`).join('');
+}
+
+function displaySuccessMessage(form) {
+  let successMessage = `<p>You have successfully posted your data!</p>`
+  form.insertAdjacentHTML('beforeend', successMessage);
+  
 }

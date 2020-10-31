@@ -1,3 +1,5 @@
+@import 'variables';
+
 * {
   margin: 0;
 }
@@ -11,29 +13,26 @@ body {
 
 h1 {
   text-align: center;
-  color: #ffffff;
+  color: black;
   height: 80px;
   padding-top: 10px;
 }
 
 .main {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   height: 1500px;
 }
 
 .main-sidebar-body {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   width: 25%;
   height: 100%;
 }
 
 .body-sidebar-sidebarContainer {
-  background-color: #9A9DAB;
+  background-color: adjust-hue(#9A9DAB, -270%);
   border: 1px solid black;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   align-items: center;
   text-align: center;
   overflow: scroll;
@@ -52,7 +51,6 @@ h1 {
 }
 
 .sidebar-header-line {
-  color: #ffffff;
   border: 1px solid black;
   margin: 1em 1em 0 1em;
   height: 0;
@@ -71,8 +69,7 @@ h1 {
 }
 
 .sidebar-body-friendContainer {
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
 }
 
 .sidebar-friendContainer-listItems {
@@ -83,26 +80,28 @@ h1 {
   width: 100%;
   border: 1px solid black;
   margin: 0 0 1em;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   overflow: scroll;
 }
 
+.submit-btn {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .main-column-hydration {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   height: 25%
 }
 
 .main-column-activity {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   height: 50%
 }
 
 .main-column-sleep {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   height: 35%
 }
 
@@ -110,16 +109,14 @@ h1 {
   width: 100%;
   background-color: white;
   border: 1px solid black;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   align-items: center;
   margin: 1%;
   justify-content: space-between;
 }
 
 .horizontalCard-activity-container {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   justify-content: space-around;
   width: 100%;
   overflow: scroll;
@@ -128,8 +125,7 @@ h1 {
 .infoContainer-cardContainer-card-vertical {
   width: 100%;
   border: 1px solid black;
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   margin: 1%;
 }
 
@@ -138,51 +134,47 @@ h1 {
 
 .card-today-hydration {
   text-align: center;
-  background-color: #5BC8AC;
+  background-color: $hydration-color;
   height: auto;
   font-size: 1.5em;
   margin: .5em;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   justify-content: space-between;
   width: 80%;
 }
 
 .card-today-sleep {
   text-align: center;
-  background-color: #EC96A4;
+  background-color: $sleep-color;
   height: auto;
   font-size: 1.5em;
   margin: .5em;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   justify-content: space-between;
   width: 80%;
 }
 
 .card-today-activity {
   text-align: center;
-  background-color: #DFE166;
+  background-color: $activity-color;
   height: auto;
   font-size: 1.5em;
   margin: .3em;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   justify-content: space-between;
   width: 40%;
 }
 
 .card-history-hydration {
   text-align: center;
-  background-color: #5BC8AC;
+  background-color: $hydration-color;
   font-size: 1em;
   margin: .5em;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   justify-content: flex-start;
   width: 50%;
   overflow-wrap: break-word;
@@ -191,12 +183,11 @@ h1 {
 
 .card-history-sleep {
   text-align: center;
-  background-color: #EC96A4;
+  background-color: $sleep-color;
   font-size: 1em;
   margin: .5em;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   justify-content: flex-start;
   width: 50%;
   overflow: scroll;
@@ -204,12 +195,11 @@ h1 {
 
 .card-history-activity {
   text-align: center;
-  background-color: #DFE166;
+  background-color: $activity-color;
   font-size: 1em;
   margin: .5em;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   justify-content: flex-start;
   width: 50%;
   height: 93%;
@@ -254,29 +244,30 @@ h1 {
 }
 
 .todays-metrics {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   justify-content: space-around;
   align-items: space-between;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  //justify-content: center;
-  align-items:center;
+.sleep-metric {
+  width: 85%;
 }
 
 .hydration {
-  background-color: #5BC8AC;
+  @include flex-column;
+  align-items: center;
+  width: 80%;
+  background-color: $hydration-color;
 }
 
 .activity {
-  background-color: #DFE166;
+  @extend .hydration;
+  background-color: $activity-color;
 }
 
 .sleep {
-  background-color: #EC96A4;
+  @extend .hydration;
+  background-color: $sleep-color;
 }
 
 .hidden {
