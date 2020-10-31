@@ -249,9 +249,14 @@ h1 {
   align-items: space-between;
 }
 
+.sleep-metric {
+  width: 85%;
+}
+
 .hydration {
   @include flex-column;
   align-items: center;
+  width: 80%;
   background-color: $hydration-color;
 }
 
