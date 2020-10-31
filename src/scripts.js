@@ -322,16 +322,19 @@ function displaySleepQualityToday(id, sleepInfo, dateString) {
 function displayAvgSleepQuality(sleepInfo) {
   const avUserSleepQuality = document.getElementById('avUserSleepQuality');
   avUserSleepQuality.innerHTML = ""
+  const sleepQuality = Math.round(sleepInfo.calculateAllUserSleepQuality() *100)/100
   const sleepBlock =
   `<p>The average user's sleep quality is</p>
-  <p><span class="number">${Math.round(sleepInfo.calculateAllUserSleepQuality() *100)/100}</span></p>
+  <p><span class="number">${typeof sleepQuality === "number" ? sleepQuality : 0}</span></p>
   <p>out of 5.</p>`
   avUserSleepQuality.insertAdjacentHTML("afterBegin", sleepBlock);
 }
 
 function displaySleepWeek(id, sleepInfo, userStorage, dateString, laterDateString) {
   const sleepEarlierWeek = document.getElementById('sleepEarlierWeek');
+  sleepEarlierWeek.innerHTML = ""
   const sleepThisWeek = document.getElementById('sleepThisWeek');
+  sleepThisWeek.innerHTML = ""
   const thisWeekSleepHTML = makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(dateString, id, userStorage, 'hoursSlept'));
   const earlierWeekSleepHTML = makeSleepHTML(id, sleepInfo, userStorage, sleepInfo.calculateSpecifiedWeekData(laterDateString, id, userStorage, 'hoursSlept'));
   sleepThisWeek.insertAdjacentHTML('afterBegin', thisWeekSleepHTML);
