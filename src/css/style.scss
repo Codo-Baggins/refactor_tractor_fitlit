@@ -252,3 +252,33 @@ h1 {
   font-weight: bold;
   font-family: sans-serif;
 }
+
+.todays-metrics {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: space-between;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+  align-items:center;
+}
+
+.hydration {
+  background-color: #5BC8AC;
+}
+
+.activity {
+  background-color: #DFE166;
+}
+
+.sleep {
+  background-color: #EC96A4;
+}
+
+.hidden {
+  display: none;
+}

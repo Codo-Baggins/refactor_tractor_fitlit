@@ -1,8 +1,8 @@
 import HealthMonitor from './Health-monitor';
 
 class Sleep extends HealthMonitor {
-  constructor(hydrationData) {
-    super(hydrationData);
+  constructor(sleepData) {
+    super(sleepData);
   }
 
   calculateAllUserSleepQuality() {

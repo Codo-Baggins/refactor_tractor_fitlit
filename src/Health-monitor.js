@@ -14,9 +14,11 @@ class HealthMonitor {
 
   calculateDaily(id, date, property) {
     const propertyByDate = this.dataSet.find(data => {
-      return id === data.userID && date == data.date
+      return id === data.userID && date === data.date
     });
-    return propertyByDate[property];
+    if (propertyByDate && propertyByDate[property]) {
+      return propertyByDate[property];
+    }
   }
 
   calculateSpecifiedWeekData(date, id, userRepo, property) {
