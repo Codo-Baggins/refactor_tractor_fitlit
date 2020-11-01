@@ -249,8 +249,13 @@ h1 {
   align-items: space-between;
 }
 
-.sleep-metric {
+input {
   width: 85%;
+  margin: 2% 0 2% 0
+}
+
+button {
+  margin: 2%;
 }
 
 .hydration {
@@ -258,6 +263,10 @@ h1 {
   align-items: center;
   width: 80%;
   background-color: $hydration-color;
+  padding: 2% 0 2% 0;
+  margin: 2% 0 2% 0;
+  width: 30%;
+  border: black 1px solid;
 }
 
 .activity {
@@ -267,6 +276,18 @@ h1 {
 
 .sleep {
   @extend .hydration;
+  background-color: $sleep-color;
+}
+
+#hydration-records {
+  background-color: $hydration-color;
+}
+
+#activity-records {
+  background-color: $activity-color;
+}
+
+#sleep-records {
   background-color: $sleep-color;
 }
 
