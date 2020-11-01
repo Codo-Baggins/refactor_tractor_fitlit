@@ -37,153 +37,6 @@ function createRandomUser(userData) {
   loadMonitorData()
 }
 
-function loadMonitorData() {
-  console.log("hey")
-
-  let sleepData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData')
-    .then(response => response.json())
-    .then(data => data.sleepData)
-    // .catch(error => console.log("error.message"))
-
-  let activityData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData')
-    .then(response => response.json())
-    .then(data => data.activityData)
-    .catch(error => console.log(error.message))
-
-  let hydrationData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData')
-    .then(response => response.json())
-    .then(data => data.hydrationData)
-    .catch(error => console.log(error.message))
-
-  Promise.all([sleepData, activityData, hydrationData]).then(data => {
-    defineVariables(data[0], data[1], data[2])
-  })
-}
-
-function handleMetricSubmits(event) {
-  if (event.target.classList.contains("hydration-submit")) {
-    evaluateHydrationInput();
-  } else if (event.target.classList.contains("sleep-submit")) {
-    evaluateSleepInput()
-  } else if (event.target.classList.contains("activity-submit")) {
-    evaluateActivityInput()
-  }
-}
-
-  function evaluateHydrationInput(event) {
-    const dateInput = document.querySelector('.hydration-date-input');
-    const ouncesInput = document.querySelector('.hydration-ounces-input')
-    if (dateInput.value !== "" && ouncesInput.value !== "") {
-      const dataToPost = createHydrationObject(dateInput, ouncesInput);
-      postHyrdationSubmission(dataToPost);
-    }
-  }
-
-  function createHydrationObject(dateInput, ouncesInput) {
-    const formattedDate = dateInput.value.replace(/-/g,"/");
-    return {"userID": userNow.id, "date": formattedDate, "numOunces": parseInt(ouncesInput.value)}
-  }
-
-  function postHyrdationSubmission(dataToPost) {
-    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData", {
-      method: 'POST',
-      headers: {
-  	'Content-Type': 'application/json'
-    },
-      body: JSON.stringify(dataToPost),
-    })
-    .then(response => response.json())
-    .then(message => handlePostSuccess('.hydration'))
-    .catch(error => console.log(error.message))
-  }
-
-  function handlePostSuccess(className) {
-    let form = document.querySelector(`${className}`)
-    loadMonitorData()
-    displaySuccessMessage(form)
-    form.reset();
-    setTimeout(function() { form.lastChild.innerHTML = '' }, 5000);
-  }
-
-  function evaluateSleepInput() {
-    const dateInput = document.querySelector('.sleep-date-input')
-    const sleepAmount = document.querySelector('.hours-slept-input')
-    const sleepQuality = document.querySelector('.sleep-quality-input')
-    if (dateInput.value !== "" && sleepAmount.value !== "" && sleepQuality.value !== "") {
-      const dataToPost = createSleepObject(dateInput, sleepAmount, sleepQuality)
-      postSleepSubmission(dataToPost);
-    }
-  }
-
-  function createSleepObject(dateInput, sleepAmount, sleepQuality) {
-    const formattedDate = dateInput.value.replace(/-/g,"/");
-    return {"userID": user.id, "date": formattedDate, "hoursSlept": parseInt(sleepAmount.value), "sleepQuality": parseInt(sleepQuality.value)}
-  }
-
-  function postSleepSubmission(dataToPost) {
-    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData", {
-      method: 'POST',
-      headers: {
-  	'Content-Type': 'application/json'
-    },
-      body: JSON.stringify(dataToPost),
-    })
-    .then(response => response.json())
-    .then(message => handlePostSuccess('.sleep'))
-    .catch(error => console.log(error.message))
-  }
-
-  function evaluateActivityInput() {
-    const dateInput = document.querySelector('.activity-date-input')
-    const stepCount = document.querySelector('.steps-walked-input')
-    const minutesActive = document.querySelector('.minutes-active-input')
-    const stairCount = document.querySelector('.stairs-input')
-    if (dateInput.value !== "" && minutesActive.value !== "" && stepCount.value !== "" && stairCount.value !== "") {
-      const dataToPost = createActivityObject(dateInput, stepCount, minutesActive, stairCount)
-      postActvitySubmission(dataToPost);
-    }
-  }
-
-  function createActivityObject(dateInput, stepCount, minutesActive, stairCount) {
-    const formattedDate = dateInput.value.replace(/-/g,"/");
-    return {"userID": user.id, "date": formattedDate, "numSteps": parseInt(stepCount.value), "minutesActive": parseInt(minutesActive.value), "flightsOfStairs": parseInt(stairCount.value)}
-  }
-
-  function postActvitySubmission(dataToPost) {
-    console.log(dataToPost);
-    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData", {
-      method: 'POST',
-      headers: {
-  	'Content-Type': 'application/json'
-    },
-      body: JSON.stringify(dataToPost),
-    })
-    .then(response => response.json())
-    .then(message => handlePostSuccess('.activity'))
-    .catch(error => console.log(error.message))
-  }
-
-function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek) {
-  console.log(userNowId)
-  historicalWeek.forEach(instance => instance.insertAdjacentHTML('afterBegin', `Week of ${randomHistory}`));
-  addInfoToSidebar(userNow, userRepo);
-  getHyrdationElements(userNowId, hydrationRepo, today, userRepo, randomHistory)
-  getSleepElements(userNowId, sleepRepo, today, userRepo, randomHistory);
-  let winnerNow = makeWinnerID(activityRepo, userNow, today, userRepo);
-  getFriendInfoElements(userNowId, activityRepo, userRepo, today, randomHistory, userNow);
-  getActivityElements(userNowId, activityRepo, today, userRepo, randomHistory, userNow, winnerNow);
-}
-
-function defineVariables(sleepData, activityData, hydrationData) {
-  global.hydrationRepo = new Hydration(hydrationData);
-  global.sleepRepo = new Sleep(sleepData);
-  global.activityRepo = new Activity(activityData);
-  const today = makeToday(userRepo, userNow.id, hydrationData);
-  const randomHistory = makeRandomDate(userRepo, userNow.id, hydrationData);
-  const historicalWeek = document.querySelectorAll('.historicalWeek');
-  startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNow.id, userNow, today, randomHistory, historicalWeek);
-}
-
 function makeUsers(dataSet, userData) {
   userData.forEach(function(dataItem) {
     global.user = new User(dataItem);
@@ -199,54 +52,32 @@ function getUserById(id, listRepo) {
   return listRepo.getDataFromID(id);
 };
 
-
-function addInfoToSidebar(user, userStorage) {
-  displaySideBarName(user)
-  displayStepGoalCard(user)
-  displayHeaderText(user)
-  displayUserDetails(user)
-  displayUserStride(user)
-  displayUserFriends(user, userStorage);
-};
-
-function displayUserFriends(user, userStorage) {
-  const friendList = document.getElementById('friendList');
-  friendList.insertAdjacentHTML('afterBegin', makeFriendHTML(user, userStorage))
+function loadMonitorData() {
+  let sleepData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData')
+    .then(response => response.json())
+    .then(data => data.sleepData)
+    .catch(error => console.log("error.message"))
+  let activityData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData')
+    .then(response => response.json())
+    .then(data => data.activityData)
+    .catch(error => console.log(error.message))
+  let hydrationData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData')
+    .then(response => response.json())
+    .then(data => data.hydrationData)
+    .catch(error => console.log(error.message))
+  Promise.all([sleepData, activityData, hydrationData]).then(data => {
+    defineVariables(data[0], data[1], data[2])
+  })
 }
 
-function displayUserStride(user) {
-  const userStridelength = document.getElementById('userStridelength');
-  userStridelength.innerText = `Your stridelength is ${user.strideLength} meters.`;
-}
-
-function displayUserDetails(user) {
-  const userAddress = document.getElementById('userAddress');
-  const userEmail = document.getElementById('userEmail');
-  userAddress.innerText = user.address;
-  userEmail.innerText = user.email;
-}
-
-function displayHeaderText(user) {
-  const headerText = document.getElementById('headerText');
-  headerText.innerText = `${user.getFirstName()}'s Activity Tracker`;
-}
-
-function displayStepGoalCard(user) {
-  const stepGoalCard = document.getElementById('stepGoalCard');
-  stepGoalCard.innerText = `Your daily step goal is ${user.dailyStepGoal}.`
-}
-
-function displaySideBarName(user) {
-  const sidebarName = document.getElementById('sidebarName');
-  sidebarName.innerText = user.name;
-}
-
-function makeFriendHTML(user, userStorage) {
-  return user.getFriendsNames(userStorage).map(friendName => `<li class='historical-list-listItem'>${friendName}</li>`).join('');
-}
-
-function makeWinnerID(activityInfo, user, dateString, userStorage){
-  return activityInfo.getWinnerId(user, dateString, userStorage)
+function defineVariables(sleepData, activityData, hydrationData) {
+  global.hydrationRepo = new Hydration(hydrationData);
+  global.sleepRepo = new Sleep(sleepData);
+  global.activityRepo = new Activity(activityData);
+  const today = makeToday(userRepo, userNow.id, hydrationData);
+  const randomHistory = makeRandomDate(userRepo, userNow.id, hydrationData);
+  const historicalWeek = document.querySelectorAll('.historicalWeek');
+  startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNow.id, userNow, today, randomHistory, historicalWeek);
 }
 
 function makeToday(userStorage, id, dataSet) {
@@ -257,6 +88,61 @@ function makeToday(userStorage, id, dataSet) {
 function makeRandomDate(userStorage, id, dataSet) {
   var sortedArray = userStorage.makeSortedUserArray(id, dataSet);
   return sortedArray[Math.floor(Math.random() * sortedArray.length)].date
+}
+
+function startApp(userRepo, hydrationRepo, sleepRepo, activityRepo, userNowId, userNow, today, randomHistory, historicalWeek) {
+  historicalWeek.forEach(instance => instance.insertAdjacentHTML('afterBegin', `Week of ${randomHistory}`));
+  addInfoToSidebar(userNow, userRepo);
+  getHyrdationElements(userNowId, hydrationRepo, today, userRepo, randomHistory)
+  getSleepElements(userNowId, sleepRepo, today, userRepo, randomHistory);
+  let winnerNow = makeWinnerID(activityRepo, userNow, today, userRepo);
+  getFriendInfoElements(userNowId, activityRepo, userRepo, today, randomHistory, userNow);
+  getActivityElements(userNowId, activityRepo, today, userRepo, randomHistory, userNow, winnerNow);
+}
+
+function addInfoToSidebar(user, userStorage) {
+  displaySideBarName(user)
+  displayStepGoalCard(user)
+  displayHeaderText(user)
+  displayUserDetails(user)
+  displayUserStride(user)
+  displayUserFriends(user, userStorage);
+};
+
+function displaySideBarName(user) {
+  const sidebarName = document.getElementById('sidebarName');
+  sidebarName.innerText = user.name;
+}
+
+function displayStepGoalCard(user) {
+  const stepGoalCard = document.getElementById('stepGoalCard');
+  stepGoalCard.innerText = `Your daily step goal is ${user.dailyStepGoal}.`
+}
+
+function displayHeaderText(user) {
+  const headerText = document.getElementById('headerText');
+  headerText.innerText = `${user.getFirstName()}'s Activity Tracker`;
+}
+
+function displayUserDetails(user) {
+  const userAddress = document.getElementById('userAddress');
+  const userEmail = document.getElementById('userEmail');
+  userAddress.innerText = user.address;
+  userEmail.innerText = user.email;
+}
+
+function displayUserStride(user) {
+  const userStridelength = document.getElementById('userStridelength');
+  userStridelength.innerText = `Your stridelength is ${user.strideLength} meters.`;
+}
+
+function displayUserFriends(user, userStorage) {
+  const friendList = document.getElementById('friendList');
+  friendList.insertAdjacentHTML('afterBegin', makeFriendHTML(user, userStorage))
+}
+
+function makeFriendHTML(user, userStorage) {
+  return user.getFriendsNames(userStorage).map(friendName => `<li class='historical-list-listItem'>${friendName}</li>`).join('');
 }
 
 function getHyrdationElements(id, hydrationInfo, dateString, userStorage, laterDateString) {
@@ -307,7 +193,6 @@ function getSleepElements(id, sleepInfo, dateString, userStorage, laterDateStrin
   displaySleepWeek(id, sleepInfo, userStorage, dateString, laterDateString)
 }
 
-//THIS FUNCTION ISSUE
 function displaySleepQualityToday(id, sleepInfo, dateString) {
   const sleepNumber = sleepInfo.calculateDaily(id, dateString, 'sleepQuality')
   const sleepQualityToday = document.getElementById('sleepQualityToday');
@@ -345,8 +230,57 @@ function makeSleepHTML(id, sleepInfo, userStorage, method) {
   return method.map(sleepData => `<li class="historical-list-listItem">On ${sleepData} hours</li>`).join('');
 }
 
-function makeSleepQualityHTML(id, sleepInfo, userStorage, method) {
-  return method.map(sleepQualityData => `<li class="historical-list-listItem">On ${sleepQualityData}/5 quality of sleep</li>`).join('');
+function makeWinnerID(activityInfo, user, dateString, userStorage){
+  return activityInfo.getWinnerId(user, dateString, userStorage)
+}
+
+function getFriendInfoElements(id, activityInfo, userStorage, dateString, laterDateString, user) {
+  displayBigWinner(activityInfo, user, dateString, userStorage)
+  displayFriendListHistory(id, activityInfo, userStorage, user, dateString)
+  displayStreakListMins(id, activityInfo, userStorage);
+  displayStreakList(id, activityInfo, userStorage)
+  displayFriendChallengeListToday(id, activityInfo, userStorage, user, dateString);
+}
+
+function displayBigWinner(activityInfo, user, dateString, userStorage) {
+  const bigWinner = document.getElementById('bigWinner');
+  bigWinner.innerHTML = '';
+  bigWinner.insertAdjacentHTML('afterBegin', `THIS WEEK'S WINNER! ${activityInfo.showcaseWinner(user, dateString, userStorage)} steps`)
+}
+
+function displayFriendListHistory(id, activityInfo, userStorage, user, dateString) {
+  const friendChallengeListHistory = document.getElementById('friendChallengeListHistory');
+  friendChallengeListHistory.innerHTML = '';
+  const friendBlock = makeFriendChallengeHTML(id, activityInfo, userStorage, activityInfo.showChallengeListAndWinner(user, dateString, userStorage))
+  friendChallengeListHistory.insertAdjacentHTML("afterBegin", friendBlock);
+}
+
+function makeFriendChallengeHTML(id, activityInfo, userStorage, method) {
+  return method.map(friendChallengeData => `<li class="historical-list-listItem">Your friend ${friendChallengeData} average steps.</li>`).join('');
+}
+
+function displayStreakListMins(id, activityInfo, userStorage) {
+  const streakListMinutes = document.getElementById('streakListMinutes')
+  streakListMinutes.innerHTML = '';
+  const streakBlock = makeStepStreakHTML(id, activityInfo, userStorage, activityInfo.getStreak(userStorage, id, 'minutesActive'))
+  streakListMinutes.insertAdjacentHTML("afterBegin", streakBlock);
+}
+
+function makeStepStreakHTML(id, activityInfo, userStorage, method) {
+  return method.map(streakData => `<li class="historical-list-listItem">${streakData}!</li>`).join('');
+}
+
+function displayStreakList(id, activityInfo, userStorage) {
+  const streakList = document.getElementById('streakList');
+  const streakBlock = makeStepStreakHTML(id, activityInfo, userStorage, activityInfo.getStreak(userStorage, id, 'numSteps'))
+  streakList.insertAdjacentHTML("afterBegin", streakBlock);
+}
+
+function displayFriendChallengeListToday(id, activityInfo, userStorage, user, dateString) {
+  const friendChallengeListToday = document.getElementById('friendChallengeListToday');
+  friendChallengeListToday.innerHTML = '';
+  const challengeBlock = makeFriendChallengeHTML(id, activityInfo, userStorage, activityInfo.showChallengeListAndWinner(user, dateString, userStorage))
+  friendChallengeListToday.insertAdjacentHTML("afterBegin", challengeBlock);
 }
 
 function getActivityElements(id, activityInfo, dateString, userStorage, laterDateString, user, winnerId) {
@@ -368,25 +302,8 @@ function displayBestUserSteps(user, activityInfo, userStorage, winnerId, dateStr
   bestUserSteps.insertAdjacentHTML("afterBegin", stepsBlock);
 }
 
-function displayUserMinsWeek(id, activityInfo, userStorage, dateString) {
-  const userMinutesThisWeek = document.getElementById('userMinutesThisWeek');
-  userMinutesThisWeek.innerHTML = ""
-  const minsBlock = makeMinutesHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "minutesActive"))
-  userMinutesThisWeek.insertAdjacentHTML("afterBegin", minsBlock);
-}
-
-function displayUserStairsWeek(id, activityInfo, userStorage, dateString) {
-  const userStairsThisWeek = document.getElementById('userStairsThisWeek');
-  userStairsThisWeek.innerHTML = ""
-  const stairsBlock = makeStairsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "flightsOfStairs"))
-  userStairsThisWeek.insertAdjacentHTML("afterBegin", stairsBlock);
-}
-
-function displayUserStepsWeek(id, activityInfo, userStorage, dateString) {
-  const userStepsThisWeek = document.getElementById('userStepsThisWeek');
-  userStepsThisWeek.innerHTML = "";
-  const stepsBlock = makeStepsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "numSteps"))
-  userStepsThisWeek.insertAdjacentHTML("afterBegin", stepsBlock);
+function makeStepsHTML(id, activityInfo, userStorage, method) {
+  return method.map(activityData => `<li class="historical-list-listItem">On ${activityData} steps</li>`).join('');
 }
 
 function displayAvgMinsToday(activityInfo, dateString, userStorage) {
@@ -464,69 +381,146 @@ function displayUserStairsToday(activityInfo, id, dateString, userStorage) {
   userStairsToday.insertAdjacentHTML("afterBegin", stairsBlock)
 }
 
-function makeStepsHTML(id, activityInfo, userStorage, method) {
-  return method.map(activityData => `<li class="historical-list-listItem">On ${activityData} steps</li>`).join('');
-}
-
-function makeStairsHTML(id, activityInfo, userStorage, method) {
-  return method.map(data => `<li class="historical-list-listItem">On ${data} flights</li>`).join('');
+function displayUserMinsWeek(id, activityInfo, userStorage, dateString) {
+  const userMinutesThisWeek = document.getElementById('userMinutesThisWeek');
+  userMinutesThisWeek.innerHTML = ""
+  const minsBlock = makeMinutesHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "minutesActive"))
+  userMinutesThisWeek.insertAdjacentHTML("afterBegin", minsBlock);
 }
 
 function makeMinutesHTML(id, activityInfo, userStorage, method) {
   return method.map(data => `<li class="historical-list-listItem">On ${data} minutes</li>`).join('');
 }
 
-function getFriendInfoElements(id, activityInfo, userStorage, dateString, laterDateString, user) {
-  displayBigWinner(activityInfo, user, dateString, userStorage)
-  displayFriendListHistory(id, activityInfo, userStorage, user, dateString)
-  displayStreakListMins(id, activityInfo, userStorage);
-  displayStreakList(id, activityInfo, userStorage)
-  displayFriendChallengeListToday(id, activityInfo, userStorage, user, dateString);
+function displayUserStairsWeek(id, activityInfo, userStorage, dateString) {
+  const userStairsThisWeek = document.getElementById('userStairsThisWeek');
+  userStairsThisWeek.innerHTML = ""
+  const stairsBlock = makeStairsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "flightsOfStairs"))
+  userStairsThisWeek.insertAdjacentHTML("afterBegin", stairsBlock);
 }
 
-function displayBigWinner(activityInfo, user, dateString, userStorage) {
-  const bigWinner = document.getElementById('bigWinner');
-  bigWinner.innerHTML = '';
-  bigWinner.insertAdjacentHTML('afterBegin', `THIS WEEK'S WINNER! ${activityInfo.showcaseWinner(user, dateString, userStorage)} steps`)
+function makeStairsHTML(id, activityInfo, userStorage, method) {
+  return method.map(data => `<li class="historical-list-listItem">On ${data} flights</li>`).join('');
 }
 
-function displayFriendListHistory(id, activityInfo, userStorage, user, dateString) {
-  const friendChallengeListHistory = document.getElementById('friendChallengeListHistory');
-  friendChallengeListHistory.innerHTML = '';
-  const friendBlock = makeFriendChallengeHTML(id, activityInfo, userStorage, activityInfo.showChallengeListAndWinner(user, dateString, userStorage))
-  friendChallengeListHistory.insertAdjacentHTML("afterBegin", friendBlock);
+function displayUserStepsWeek(id, activityInfo, userStorage, dateString) {
+  const userStepsThisWeek = document.getElementById('userStepsThisWeek');
+  userStepsThisWeek.innerHTML = "";
+  const stepsBlock = makeStepsHTML(id, activityInfo, userStorage, activityInfo.userDataForWeek(id, dateString, userStorage, "numSteps"))
+  userStepsThisWeek.insertAdjacentHTML("afterBegin", stepsBlock);
 }
 
-function displayStreakListMins(id, activityInfo, userStorage) {
-  const streakListMinutes = document.getElementById('streakListMinutes')
-  streakListMinutes.innerHTML = '';
-  const streakBlock = makeStepStreakHTML(id, activityInfo, userStorage, activityInfo.getStreak(userStorage, id, 'minutesActive'))
-  streakListMinutes.insertAdjacentHTML("afterBegin", streakBlock);
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function handleMetricSubmits(event) {
+  if (event.target.classList.contains("hydration-submit")) {
+    evaluateHydrationInput();
+  } else if (event.target.classList.contains("sleep-submit")) {
+    evaluateSleepInput()
+  } else if (event.target.classList.contains("activity-submit")) {
+    evaluateActivityInput()
+  }
 }
 
-function displayStreakList(id, activityInfo, userStorage) {
-  const streakList = document.getElementById('streakList');
-  const streakBlock = makeStepStreakHTML(id, activityInfo, userStorage, activityInfo.getStreak(userStorage, id, 'numSteps'))
-  streakList.insertAdjacentHTML("afterBegin", streakBlock);
-}
+  function evaluateHydrationInput(event) {
+    const dateInput = document.querySelector('.hydration-date-input');
+    const ouncesInput = document.querySelector('.hydration-ounces-input')
+    if (dateInput.value !== "" && ouncesInput.value !== "") {
+      const dataToPost = createHydrationObject(dateInput, ouncesInput);
+      postHyrdationSubmission(dataToPost);
+    }
+  }
 
-function displayFriendChallengeListToday(id, activityInfo, userStorage, user, dateString) {
-  const friendChallengeListToday = document.getElementById('friendChallengeListToday');
-  friendChallengeListToday.innerHTML = '';
-  const challengeBlock = makeFriendChallengeHTML(id, activityInfo, userStorage, activityInfo.showChallengeListAndWinner(user, dateString, userStorage))
-  friendChallengeListToday.insertAdjacentHTML("afterBegin", challengeBlock);
-}
+  function createHydrationObject(dateInput, ouncesInput) {
+    const formattedDate = dateInput.value.replace(/-/g,"/");
+    return {"userID": userNow.id, "date": formattedDate, "numOunces": parseInt(ouncesInput.value)}
+  }
 
-function makeFriendChallengeHTML(id, activityInfo, userStorage, method) {
-  return method.map(friendChallengeData => `<li class="historical-list-listItem">Your friend ${friendChallengeData} average steps.</li>`).join('');
-}
+  function postHyrdationSubmission(dataToPost) {
+    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/hydration/hydrationData", {
+      method: 'POST',
+      headers: {
+  	'Content-Type': 'application/json'
+    },
+      body: JSON.stringify(dataToPost),
+    })
+    .then(response => response.json())
+    .then(message => handlePostSuccess('.hydration'))
+    .catch(error => console.log(error.message))
+  }
 
-function makeStepStreakHTML(id, activityInfo, userStorage, method) {
-  return method.map(streakData => `<li class="historical-list-listItem">${streakData}!</li>`).join('');
-}
+  function handlePostSuccess(className) {
+    let form = document.querySelector(`${className}`)
+    loadMonitorData()
+    displaySuccessMessage(form)
+    form.reset();
+    setTimeout(function() { form.lastChild.innerHTML = '' }, 5000);
+  }
 
-function displaySuccessMessage(form) {
-  let successMessage = `<p>You have successfully posted your data!</p>`
-  form.insertAdjacentHTML('beforeend', successMessage);
+  function displaySuccessMessage(form) {
+    let successMessage = `<p>You have successfully posted your data!</p>`
+    form.insertAdjacentHTML('beforeend', successMessage);
+  }
 
-}
+  function evaluateSleepInput() {
+    const dateInput = document.querySelector('.sleep-date-input')
+    const sleepAmount = document.querySelector('.hours-slept-input')
+    const sleepQuality = document.querySelector('.sleep-quality-input')
+    if (dateInput.value !== "" && sleepAmount.value !== "" && sleepQuality.value !== "") {
+      const dataToPost = createSleepObject(dateInput, sleepAmount, sleepQuality)
+      postSleepSubmission(dataToPost);
+    }
+  }
+
+  function createSleepObject(dateInput, sleepAmount, sleepQuality) {
+    const formattedDate = dateInput.value.replace(/-/g,"/");
+    return {"userID": user.id, "date": formattedDate, "hoursSlept": parseInt(sleepAmount.value), "sleepQuality": parseInt(sleepQuality.value)}
+  }
+
+  function postSleepSubmission(dataToPost) {
+    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/sleep/sleepData", {
+      method: 'POST',
+      headers: {
+  	'Content-Type': 'application/json'
+    },
+      body: JSON.stringify(dataToPost),
+    })
+    .then(response => response.json())
+    .then(message => handlePostSuccess('.sleep'))
+    .catch(error => console.log(error.message))
+  }
+
+  function evaluateActivityInput() {
+    const dateInput = document.querySelector('.activity-date-input')
+    const stepCount = document.querySelector('.steps-walked-input')
+    const minutesActive = document.querySelector('.minutes-active-input')
+    const stairCount = document.querySelector('.stairs-input')
+    if (dateInput.value !== "" && minutesActive.value !== "" && stepCount.value !== "" && stairCount.value !== "") {
+      const dataToPost = createActivityObject(dateInput, stepCount, minutesActive, stairCount)
+      postActvitySubmission(dataToPost);
+    }
+  }
+
+  function createActivityObject(dateInput, stepCount, minutesActive, stairCount) {
+    const formattedDate = dateInput.value.replace(/-/g,"/");
+    return {"userID": user.id, "date": formattedDate, "numSteps": parseInt(stepCount.value), "minutesActive": parseInt(minutesActive.value), "flightsOfStairs": parseInt(stairCount.value)}
+  }
+
+  function postActvitySubmission(dataToPost) {
+    console.log(dataToPost);
+    fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData", {
+      method: 'POST',
+      headers: {
+  	'Content-Type': 'application/json'
+    },
+      body: JSON.stringify(dataToPost),
+    })
+    .then(response => response.json())
+    .then(message => handlePostSuccess('.activity'))
+    .catch(error => console.log(error.message))
+  }
+
+//not being used?
+  // function makeSleepQualityHTML(id, sleepInfo, userStorage, method) {
+  //   return method.map(sleepQualityData => `<li class="historical-list-listItem">On ${sleepQualityData}/5 quality of sleep</li>`).join('');
+  // }
