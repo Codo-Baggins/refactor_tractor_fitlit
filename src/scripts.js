@@ -16,18 +16,17 @@ const userForms = document.querySelector('.todays-metrics');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// window.addEventListener('load', loadMonitorData);
+window.addEventListener('load', fetchUsers);
 userForms.addEventListener('click', handleMetricSubmits);
 
-//window.addEventListener('load', defineVariables);
-//window.addEventListener('load', getApiData);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-let userData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/users/userData')
-  .then(response => response.json())
-  .then(data => createRandomUser(data.userData))
-  .catch(error => console.log(error.message))
+function fetchUsers() {
+  let userData = fetch('https://fe-apps.herokuapp.com/api/v1/fitlit/1908/users/userData')
+    .then(response => response.json())
+    .then(data => createRandomUser(data.userData))
+    .catch(error => console.log(error.message))
+}
 
 function createRandomUser(userData) {
   let userList = [];
@@ -529,5 +528,5 @@ function makeStepStreakHTML(id, activityInfo, userStorage, method) {
 function displaySuccessMessage(form) {
   let successMessage = `<p>You have successfully posted your data!</p>`
   form.insertAdjacentHTML('beforeend', successMessage);
-  
+
 }
