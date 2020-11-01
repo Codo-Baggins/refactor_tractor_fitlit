@@ -249,25 +249,32 @@ h1 {
   align-items: space-between;
 }
 
-.sleep-metric {
+// .sleep-metric {
+//   width: 85%;
+// }
+
+input {
   width: 85%;
+  margin: 2%;
 }
 
 .hydration {
   @include flex-column;
   align-items: center;
-  width: 80%;
   background-color: $hydration-color;
+  height: $form-height
 }
 
 .activity {
   @extend .hydration;
   background-color: $activity-color;
+  height: $form-height
 }
 
 .sleep {
   @extend .hydration;
   background-color: $sleep-color;
+  height: $form-height
 }
 
 .hidden {
