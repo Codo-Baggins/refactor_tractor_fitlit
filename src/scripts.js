@@ -11,7 +11,7 @@ import { displayObject } from './display_object';
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 const userForms = document.querySelector('.todays-metrics');
-//const displayObject = require('./display_object')
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 window.addEventListener('load', fetchUsers);
@@ -155,17 +155,6 @@ function getHydrationElements(id, hydrationInfo, dateString, userStorage, laterD
   displayHyrdrationWeek(id, hydrationInfo, userStorage, laterDateString);
 }
 
-// function displayDayHydration(id, hydrationInfo, dateString) {
-//   const hydrationToday = document.getElementById('hydrationToday');
-//   const hydrationOunces = hydrationInfo.calculateDaily(id, dateString, 'numOunces');
-//   const hydrationBlock =
-//   `<p>You drank</p>
-//   <p><span class="number">${typeof hydrationOunces === "number" ? hydrationOunces : 0}</span></p>
-//   <p>oz water today.</p>`;
-//   hydrationToday.innerHTML = "";
-//   hydrationToday.insertAdjacentHTML('afterBegin', hydrationBlock);
-// }
-
 function displayHydrationAvg(id, hydrationInfo) {
   const hydrationAverage = document.getElementById('hydrationAverage');
   const hydrationOunces = hydrationInfo.calculateAverage(id, 'numOunces');
@@ -197,17 +186,6 @@ function getSleepElements(id, sleepInfo, dateString, userStorage, laterDateStrin
   displayAvgSleepQuality(sleepInfo, avUserSleepQuality)
   displaySleepWeek(id, sleepInfo, userStorage, dateString, laterDateString);
 }
-
-// function displaySleepQualityToday(id, sleepInfo, dateString) {
-//   const sleepNumber = sleepInfo.calculateDaily(id, dateString, 'sleepQuality');
-//   const sleepQualityToday = document.getElementById('sleepQualityToday');
-//   const sleepBlock =
-//   `<p>Your sleep quality was</p>
-//   <p><span class="number">${typeof sleepNumber === "number" ? sleepNumber : 0}</span></p>
-//   <p>out of 5.</p>`;
-//   sleepQualityToday.innerHTML = "";
-//   sleepQualityToday.insertAdjacentHTML("afterBegin", sleepBlock);
-// }
 
 function displayAvgSleepQuality(sleepInfo) {
   const avUserSleepQuality = document.getElementById('avUserSleepQuality');
@@ -313,19 +291,6 @@ function makeStepsHTML(id, activityInfo, userStorage, method) {
   return method.map(activityData =>
   `<li class="historical-list-listItem">On ${activityData} steps</li>`).join('');
 }
-
-// function displayAvgMinsToday(activityInfo, dateString, userStorage) {
-//   const avgMinutesToday = document.getElementById('avgMinutesToday');
-//   const minutesNumber = activityInfo.getAllUserAverageForDay(dateString, userStorage, 'minutesActive');
-//   const minsBlock =
-//   `<p>Active Minutes:</p>
-//   <p>All Users</p>
-//   <p>
-//   <span class="number">${typeof minutesNumber === "number" ? minutesNumber : 0}</span>
-//   </p>`;
-//   avgMinutesToday.innerText = "";
-//   avgMinutesToday.insertAdjacentHTML("afterBegin", minsBlock);
-// }
 
 function displayUserMinsToday(activityInfo, id, dateString, userStorage) {
   const userMinutesToday = document.getElementById('userMinutesToday');
