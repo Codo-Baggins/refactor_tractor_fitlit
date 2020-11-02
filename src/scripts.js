@@ -74,6 +74,9 @@ function defineVariables(sleepData, activityData, hydrationData) {
   global.hydrationRepo = new Hydration(hydrationData);
   global.sleepRepo = new Sleep(sleepData);
   global.activityRepo = new Activity(activityData);
+  if (typeof(userNow) === "undefined") {
+    userNow = userRepo[0];
+  }
   const today = makeToday(userRepo, userNow.id, hydrationData);
   const randomHistory = makeRandomDate(userRepo, userNow.id, hydrationData);
   const historicalWeek = document.querySelectorAll('.historicalWeek');
@@ -326,7 +329,7 @@ function displayAvgMinsToday(activityInfo, dateString, userStorage) {
 
 function displayUserMinsToday(activityInfo, id, dateString, userStorage) {
   const userMinutesToday = document.getElementById('userMinutesToday');
-  const minutesNumber = activityInfo.userDataForToday(id, dateString, userStorage, 'minutesActive')
+  const minutesNumber =  activityInfo.userDataForToday(id, dateString, userStorage, 'minutesActive')
   const minsBlock =
   `<p>Active Minutes:</p>
   <p>You</p>
@@ -340,6 +343,7 @@ function displayUserMinsToday(activityInfo, id, dateString, userStorage) {
 function displayAvgStepsToday(activityInfo, dateString, userStorage) {
   const avgStepsToday = document.getElementById('avgStepsToday');
   const stepsNumber = activityInfo.getAllUserAverageForDay(dateString, userStorage, 'numSteps');
+  console.log(stepsNumber);
   const stepsBlock =
   `<p>Step Count:</p>
   <p>All Users</p>
