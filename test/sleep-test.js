@@ -311,10 +311,6 @@ describe('Sleep', function() {
   //   expect(sleep.calculateAverageSleepQuality(3)).to.equal(2);
   // });
 
-  it('should determine the best quality sleepers for a week', () => {
-    expect(sleep.determineBestSleepers("2019/06/21", userRepo)).to.eql(["Allie McCarthy", "Bugs Bunny"]);
-  })
-
   it('should return person with best quality sleep for the week', () => {
     expect(sleep.determineSleepWinnerForWeek("2019/06/21", userRepo)).to.eql(["Bugs Bunny"]);
   })
@@ -339,31 +335,5 @@ describe('Sleep', function() {
     userRepo = new UserRepo(users);
 
     expect(sleep.determineSleepWinnerForWeek("2019/06/21", userRepo)).to.eql(["Bugs Bunny", "Richmond"]);
-  })
-
-  it('should return person with longest sleep for the day', () => {
-    expect(sleep.determineSleepHoursWinnerForDay('2019/06/21', userRepo)).to.eql(["Bugs Bunny"]);
-  })
-
-  it('should return all qualifying users if longest sleep is a tie', () => {
-    sleepData = sleepData.push({
-      "userID": 6,
-      "date": "2019/06/21",
-      "hoursSlept": 9,
-      "sleepQuality": 4
-    })
-    let user6 = new User({
-      id: 6,
-      name: "Richmond",
-      address: "1234 Looney Street, Denver CO 80301-1697",
-      email: "BugsB1@hotmail.com",
-      strideLength: 3.8,
-      dailyStepGoal: 7000,
-      friends: [1, 2, 3]
-    });
-    users = [user1, user2, user3, user4, user5, user6];
-    userRepo = new UserRepo(users);
-
-    expect(sleep.determineSleepHoursWinnerForDay('2019/06/21', userRepo)).to.eql(["Bugs Bunny", "Richmond"]);
-  })
+  });
 });

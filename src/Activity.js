@@ -76,8 +76,8 @@ class Activity extends HealthMonitor {
 
 //this method is not tested at all...
   showcaseWinner(user, date, userRepo) {
-    let namedList = this.showChallengeListAndWinner(user, date, userRepo);
     let winner = this.showChallengeListAndWinner(user, date, userRepo).shift();
+    console.log(winner);
     return winner;
   }
 

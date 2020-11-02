@@ -208,16 +208,8 @@ describe('Activity', function() {
     expect(activity.dataSet[10].flightsOfStairs).to.eql(24);
   });
 
-  it('should return the miles a given user has walked on a given date', () => {
-    expect(activity.getMilesFromStepsByDate(1, "2019/06/15", userRepo.users[0])).to.eql(2.9);
-  });
-
   it('should return the number of minutes a given user was active for on a given day', function() {
     expect(activity.calculateDaily(1, "2019/06/16", 'minutesActive')).to.eql(12);
-  });
-
-  it('should return average active minutes in a given week', function() {
-    expect(activity.calculateActiveAverageForWeek(1, "2019/06/21", userRepo)).to.eql(40.4);
   });
 
   it('should return true/false if the given user met their step goal on a given day', () => {
@@ -233,10 +225,6 @@ describe('Activity', function() {
       "2019/06/22",
       "2019/06/23"
     ]);
-  });
-
-  it('should return the highest number of stairs climbed in a day for all time', () => {
-    expect(activity.getStairRecord(11)).to.eql(33);
   });
 
   it('should return the average flight of stairs for all users on given day', function() {
@@ -568,6 +556,10 @@ describe('Friend Activity', function() {
       'Allie McCarthy: 9552', 'Alex Roth: 7475.5'
     ])
   });
+
+  it('should get an activity winner for a chosen week', () => {
+    expect(activity.showcaseWinner(user4, "2019/06/15", userRepo)).to.eql('Allie McCarthy: 9552');
+  })
 
   it('should know the ID of the winning friend', () => {
     expect(activity.getWinnerId(user4, "2019/06/15", userRepo)).to.eql(2)
