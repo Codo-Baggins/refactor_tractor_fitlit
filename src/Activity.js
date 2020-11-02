@@ -44,8 +44,9 @@ class Activity extends HealthMonitor {
     const selectedDayData = userRepo.chooseDayDataForAllUsers(this.dataSet, date);
     const totalDayData = selectedDayData.reduce((acc, elem) => {
       acc += elem[relevantData];
+      console.log(acc)
       return acc;
-    }, 0)
+    }, 0);
     return parseFloat((totalDayData / selectedDayData.length).toFixed(1))
   }
 

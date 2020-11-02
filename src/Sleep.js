@@ -9,8 +9,9 @@ class Sleep extends HealthMonitor {
     const totalSleepQuality = this.dataSet.reduce((sumSoFar, dataItem) => {
       sumSoFar += dataItem.sleepQuality;
       return sumSoFar;
-    }, 0)
-    return totalSleepQuality / this.dataSet.length
+    }, 0);
+    const allUsersSleepQuality = parseInt(totalSleepQuality);
+    return allUsersSleepQuality / this.dataSet.length
   }
 
   determineBestSleepers(date, userRepo) {

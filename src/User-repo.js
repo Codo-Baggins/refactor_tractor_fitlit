@@ -47,7 +47,7 @@ class UserRepo {
 
   chooseDayDataForAllUsers(dataSet, date) {
     return dataSet.filter(dataItem => {
-      return dataItem.date === date
+      return dataItem.date == date;
     });
   }
 

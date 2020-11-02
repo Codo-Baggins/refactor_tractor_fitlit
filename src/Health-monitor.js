@@ -6,10 +6,11 @@ class HealthMonitor {
   calculateAverage(id, property) {
     const perDayData = this.dataSet.filter(data => {
       return id === data.userID});
-    return perDayData.reduce((sumSoFar, data) => {
+    const sum = perDayData.reduce((sumSoFar, data) => {
       sumSoFar += data[property];
       return sumSoFar;
-    }, 0) / perDayData.length;
+    }, 0);
+    return Math.round(sum / perDayData.length);
   }
 
   calculateDaily(id, date, property) {
