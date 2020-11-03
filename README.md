@@ -13,7 +13,14 @@ Refactor Tractor Fitlit is an application that stores fitness and health data fo
 
 ## Learning Goals
 
-## Programming Languages Used
+## Programming Languages And Other Tools Used
+- JavaScript
+- HTML
+- SCSS
+- NPM 
+- Chai
+- Mocha
+- Webpack
 
 ## Planning
 
