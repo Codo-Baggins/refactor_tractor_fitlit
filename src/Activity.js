@@ -5,20 +5,6 @@ class Activity extends HealthMonitor {
     super(activityData)
   }
 
-  getMilesFromStepsByDate(id, date, userRepo) {
-    const userStepsByDate = this.calculateDaily(id, date, "numSteps");
-    return parseFloat(((userStepsByDate * userRepo.strideLength) / 5280).toFixed(1));
-  }
-
-  calculateActiveAverageForWeek(id, date, userRepo) {
-    const activityWeek = userRepo.getWeekFromDate(date, id, this.dataSet);
-    const weekActivityTotal = activityWeek.reduce((acc, elem) => {
-      acc += elem.minutesActive;
-      return acc;
-    }, 0)
-    return parseFloat((weekActivityTotal / 7).toFixed(1));
-  }
-
   accomplishStepGoal(id, date, userRepo) {
     const userStepsByDate = this.calculateDaily(id, date, "numSteps");
     if (userStepsByDate === userRepo.dailyStepGoal) {
@@ -36,15 +22,10 @@ class Activity extends HealthMonitor {
     })
   }
 
-  getStairRecord(id) {
-    return this.dataSet.filter(data => id === data.userID).reduce((acc, elem) => (elem.flightsOfStairs > acc) ? elem.flightsOfStairs : acc, 0);
-  }
-
   getAllUserAverageForDay(date, userRepo, relevantData) {
     const selectedDayData = userRepo.chooseDayDataForAllUsers(this.dataSet, date);
     const totalDayData = selectedDayData.reduce((acc, elem) => {
       acc += elem[relevantData];
-      console.log(acc)
       return acc;
     }, 0);
     return parseFloat((totalDayData / selectedDayData.length).toFixed(1))
@@ -95,8 +76,8 @@ class Activity extends HealthMonitor {
 
 //this method is not tested at all...
   showcaseWinner(user, date, userRepo) {
-    let namedList = this.showChallengeListAndWinner(user, date, userRepo);
     let winner = this.showChallengeListAndWinner(user, date, userRepo).shift();
+    console.log(winner);
     return winner;
   }
 

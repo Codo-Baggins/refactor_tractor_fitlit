@@ -53,10 +53,6 @@ describe('User Repo', function() {
     expect(userRepo.getDataFromID(1)).to.eql(user1);
   });
 
-  it('should return the average of all users step goals', () => {
-    expect(userRepo.calculateAverageStepGoal()).to.eql(9500);
-  });
-
   describe('array changes', function() {
     let user1;
     let user2;

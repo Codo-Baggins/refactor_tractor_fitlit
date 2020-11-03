@@ -11,14 +11,6 @@ class UserRepo {
     return dataSet.filter((userData) => id === userData.userID);
   }
 
-  calculateAverageStepGoal() {
-    const totalStepGoal = this.users.reduce((sumSoFar, data) => {
-      sumSoFar += data.dailyStepGoal;
-      return sumSoFar;
-    }, 0);
-    return totalStepGoal / this.users.length;
-  }
-
   makeSortedUserArray(id, dataSet) {
     const selectedID = this.getDataFromUserID(id, dataSet)
     const sortedByDate = selectedID.sort((a, b) => new Date(b.date) - new Date(a.date));

@@ -308,7 +308,6 @@ function displayUserMinsToday(activityInfo, id, dateString, userStorage) {
 function displayAvgStepsToday(activityInfo, dateString, userStorage) {
   const avgStepsToday = document.getElementById('avgStepsToday');
   const stepsNumber = activityInfo.getAllUserAverageForDay(dateString, userStorage, 'numSteps');
-  console.log(stepsNumber);
   const stepsBlock =
   `<p>Step Count:</p>
   <p>All Users</p>
@@ -483,7 +482,6 @@ function handleMetricSubmits(event) {
   }
 
   function postActvitySubmission(dataToPost) {
-    console.log(dataToPost);
     fetch("https://fe-apps.herokuapp.com/api/v1/fitlit/1908/activity/activityData", {
       method: 'POST',
       headers: {
@@ -495,8 +493,3 @@ function handleMetricSubmits(event) {
     .then(message => handlePostSuccess('.activity'))
     .catch(error => console.log(error.message))
   }
-
-//not being used!
-  // function makeSleepQualityHTML(id, sleepInfo, userStorage, method) {
-  //   return method.map(sleepQualityData => `<li class="historical-list-listItem">On ${sleepQualityData}/5 quality of sleep</li>`).join('');
-  // }

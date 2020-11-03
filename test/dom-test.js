@@ -11,12 +11,12 @@ let activityInfo;
 let userStorage;
 let dateString;
 
-describe.only('DOM functionality', function() {
+describe('DOM functionality', function() {
   before(function() {
     global.displayObject = {};
     chai.spy.on(displayObject, ['displayDayHydration', 'displaySleepQualityToday', 'displayAvgMinsToday'], () => {})
     });
-    
+
     beforeEach(function() {
       id = 0;
       hydrationInfo = {};
