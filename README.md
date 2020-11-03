@@ -12,6 +12,7 @@ Refactor Tractor Fitlit is an application that stores fitness and health data fo
 - Copy the entire url into your browser search bar
 
 ## Learning Goals
+- Develop
 
 ## Programming Languages And Other Tools Used
 - JavaScript
@@ -23,12 +24,13 @@ Refactor Tractor Fitlit is an application that stores fitness and health data fo
 - Webpack
 
 ## Planning
-
+- [DTR](https://github.com/Codo-Baggins/refactor_tractor_fitlit/blob/main/planning/DTR.md)
+- [Project Board](https://github.com/Codo-Baggins/refactor_tractor_fitlit/projects/1)
 ## Challenges
 
 ## Wins
 
 ## Contributors
-- JP Carey https://github.com/jaypeasee
-- Jordon Smith https://github.com/jdxsmith
-- Joe Lopez https://github.com/Codo-Baggins
+- [JP Carey](https://github.com/jaypeasee)
+- [Jordon Smith](https://github.com/jdxsmith)
+- [Joe Lopez](https://github.com/Codo-Baggins)
