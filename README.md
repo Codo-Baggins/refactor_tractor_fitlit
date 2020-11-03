@@ -16,6 +16,10 @@ Refactor Tractor Fitlit is an application that stores fitness and health data fo
 - You will be greeted with a message that includes a url that will follow the following format: "Project is running at `http://localhost:8080/`"
 - Copy the entire url into your browser search bar
 
+## Working Application
+
+![Nov-02-2020 17-31-24](https://user-images.githubusercontent.com/67242223/97933901-49947080-1d31-11eb-9430-1d85037794cd.gif)
+
 ## Learning Goals
 - Develop and enhance our understanding of:
   - APIs
